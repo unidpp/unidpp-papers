@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semantic registry requirements for the Digital Product Passport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+--paper: #faf7f0; --paper-soft: #ffffff; --paper-raised: #f3ede1;
+--ink: #101a2b; --ink-soft: #3a4a63; --ink-muted: #6b7a92;
+--rule: #dcd2bd; --rule-soft: #ebe4d4;
+--accent: #0f4c81; --accent-soft: rgba(15, 76, 129, 0.08);
+--amber: #b45309; --navy: #0a1628; --sky: #8fb8e8; --grid: rgba(10, 22, 40, 0.045);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+background: var(--paper);
+background-image:
+linear-gradient(var(--grid) 1px, transparent 1px),
+linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+background-size: 32px 32px;
+color: var(--ink); line-height: 1.65; -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 2rem; }
+header.hero {
+background: linear-gradient(160deg, #060e1c 0%, #0a1628 55%, #14233d 100%);
+color: #f5efe4; padding: 4.5rem 0 3.5rem; border-bottom: 3px solid var(--accent);
+}
+.hero .eyebrow {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em;
+text-transform: uppercase; color: var(--sky); margin-bottom: 1.25rem;
+}
+.hero h1 {
+font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 500; line-height: 1.12;
+letter-spacing: -0.015em; margin-bottom: 1.25rem;
+}
+.hero .lede { font-size: 1.12rem; color: #c2cad8; max-width: 44rem; font-weight: 300; }
+.hero .lede strong { color: #f5efe4; font-weight: 500; }
+.hero .meta {
+margin-top: 2rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+color: #8d9bb4; letter-spacing: 0.04em;
+}
+main { padding: 3.5rem 0 4rem; }
+section { margin-bottom: 4rem; }
+h2 {
+font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+letter-spacing: -0.01em; margin-bottom: 1.4rem; color: var(--ink); padding-top: 1rem;
+}
+h2 .no {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent);
+letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.5rem;
+font-weight: 500;
+}
+h3 {
+font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600;
+margin: 2rem 0 0.75rem; color: var(--ink);
+}
+p { margin-bottom: 1.1rem; color: var(--ink-soft); }
+p strong, li strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 1.2rem 1.4rem; color: var(--ink-soft); }
+li { margin-bottom: 0.55rem; }
+.callout {
+background: var(--paper-soft); border: 1px solid var(--rule);
+border-left: 3px solid var(--accent); border-radius: 6px;
+padding: 1.25rem 1.5rem; margin: 1.6rem 0;
+}
+.callout.amber { border-left-color: var(--amber); background: #fffdf6; }
+.callout p:last-child { margin-bottom: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th {
+text-align: left; font-weight: 600; color: var(--ink);
+border-bottom: 2px solid var(--rule); padding: 0.5rem 0.75rem 0.5rem 0;
+}
+td { border-bottom: 1px solid var(--rule-soft); padding: 0.6rem 0.75rem 0.6rem 0; color: var(--ink-soft); vertical-align: top; }
+td:first-child { font-weight: 600; color: var(--ink); }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; }
+.refs ol { margin-left: 1.4rem; font-size: 0.88rem; color: var(--ink-soft); }
+.refs li { margin-bottom: 0.4rem; }
+footer { border-top: 1px solid var(--rule); padding: 2.5rem 0 3rem; color: var(--ink-muted); font-size: 0.85rem; }
+@media print {
+@page { size: A4; margin: 20mm 24mm 22mm 24mm; }
+body { background: #fff; background-image: none; }
+h2, h3 { page-break-after: avoid; }
+figure, .callout { page-break-inside: avoid; }
+tr { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="eyebrow">ISO/IEC JTC 5 · Digital Product Passport · Technical contribution · Paper 2 of 6</div>
+<h1>Semantic registry requirements for the Digital Product Passport</h1>
+<p class="lede">A requirements specification for the semantic repository mandated by
+EN 18223 §4.3: governance under ISO 19135:2025 federated registers, the UNTDED
+data-element seed, a resolution protocol for
+<span class="mono">dictionaryReference</span>, and CDDAL canonicalization —
+<strong>the layer that every data point in the passport series points into and no
+document specifies</strong>.</p>
+<div class="meta">
+ISO/TC 154 · Enosema · UN/CEFACT — with ELF (OpenCDD/CDDAL) — in the UniDPP framework<br>
+2026-09-07 · Proposed input to JTC 5 workstreams B and C; NWIP-2 basis
+</div>
+</div>
+</header>
+<main class="wrap">
+
+<section id="scope">
+<h2><span class="no">01 · Scope</span>What "filling §4.3" means</h2>
+<p>This contribution specifies the requirements for the semantic registry of the
+Digital Product Passport ecosystem: the governance model, the identifier discipline,
+the content layout, the resolution protocol, the exchange serialization, and the
+conformance regime. It is offered as input to JTC 5 workstreams B and C, and as the
+technical basis of a new-work-item proposal (NWIP-2) co-sponsored by ISO/TC 154,
+UN/CEFACT and the FERIN operators.</p>
+<p>The requirement source is the vacancy itself. EN 18223 §4.3 makes a semantic
+repository <em>required</em>, <em>governed</em> and <em>"regulation-based"</em>, and
+then leaves the operator, the protocol, resolution, caching, offline behaviour and
+failure semantics unspecified; the clause's examples are placeholder URLs
+(<span class="mono">dictionary1.eu</span>). The vacancy is now confirmed from the
+payload side by machine verification: a run of every example payload printed in
+EN 18223 (22 fixtures; paper 4, section 05) finds every Annex A
+<span class="mono">dictionaryReference</span> aimed at the placeholder host —
+repository, operator and resolution protocol unspecified (AUDIT C1) — and Annex A
+Example 3 printing <span class="mono">"https:/dictionary1/maximumPressure"</span>, a
+reference that omits the URI authority separator and cannot resolve even in principle
+(finding N2). Every
+<span class="mono">dictionaryReference</span> in the EN series resolves into this
+vacancy. The surrounding standard, meanwhile, specifies serialization detail in
+abundance — per-class JSON construction rules in §5.2.5–5.2.9, identifier casing in
+§5.2.2, XSD type exclusions in §4.1.2.9 — while the meanings those serializations
+carry have no registered home. The class taxonomy of EN 18223 (Single/MultiValued,
+MultiLanguage, RelatedResource, Collection) classifies <em>shapes of records</em>, not
+meanings of data.</p>
+<div class="callout">
+<p><strong>Design position.</strong> The registry is not an accessory to the passport;
+it is the component that makes multi-jurisdiction operation possible. Jurisdictions
+that regulate differently must register <strong>distinct data elements harmonized to a
+common concept</strong> rather than overwrite one definition — divergence becomes
+registered, auditable content instead of textual contradiction.</p>
+</div>
+</section>
+
+<section id="governance">
+<h2><span class="no">02 · Governance</span>Federated registers per ISO 19135:2025</h2>
+<p>The governance model is the procedures standard already written for exactly this
+problem: ISO 19135:2025, <em>Geographic information — Procedures for item
+registration</em>, operated as FERIN (the federated register model the EPSG and OGC
+registers have run at global scale for decades). The semantic registry shall be a
+<strong>principal register with federated subregisters</strong>:</p>
+<table>
+<tr><th style="width:26%">19135 role</th><th>Responsibility in the DPP registry</th></tr>
+<tr><td>Register owner</td><td>Sets scope and policy of a (sub)register; for jurisdictional subregisters, typically the national standards body or regulator-nominated authority.</td></tr>
+<tr><td>Register manager</td><td>Day-to-day operation, item admission workflow, publication of the register in machine-readable form.</td></tr>
+<tr><td>Submitting organization</td><td>Proposes items: regulators and their NSBs for jurisdiction profiles; sector bodies for overlays; standards committees for base data elements.</td></tr>
+<tr><td>Control body</td><td>Decides proposals; owns the harmonization rulings that map divergent regional items to common concepts.</td></tr>
+</table>
+<p>Item lifecycle follows 19135: <strong>proposal → public review → valid</strong>, with
+<strong>superseded</strong> and <strong>retired</strong> as the only exits — items are
+never edited in place; a corrected definition is a new version whose predecessor remains
+resolvable, because every issued passport pins the version it was validated
+against. Profiles constrain or add to registered definitions; they never redefine them.</p>
+</section>
+
+<section id="content">
+<h2><span class="no">03 · Content and identifiers</span>The subregister layout and the UNTDED seed</h2>
+<p>The principal register federates at least these subregisters:</p>
+<ul>
+<li><strong>Data elements</strong> — seeded from <strong>UNTDED</strong>, the United
+Nations Trade Data Element Directory (live at untded.org; ISO/TC 154 document N1727),
+with national registration authorities as federated subregisters, per the historic
+UNTDED practice of national regional subsets;</li>
+<li><strong>Jurisdiction and sector profiles</strong> — the registered profile objects
+of the framework's lens model (paper 1), including their trigger predicates and
+effective dates; this subregister also carries <strong>carrier and presentation
+profiles</strong> with their translation rules: GB/T 33993 is a national wrapper over
+GS1 syntax, so cross-carrier interoperability needs registered translation rules (QR
+code structure, mandatory keys, URL patterns) between GB/T 33993, GS1 Digital Link and
+the EN 18220 carrier bindings;</li>
+<li><strong>Cryptographic suites</strong> — per-jurisdiction algorithm bindings
+(SM-family as ISO/IEC 14888-3/10118-3/18033-3 mechanisms; FIPS suites; post-quantum
+families) with migration phases;</li>
+<li><strong>Trust anchors and the master list</strong> — the registry content of the
+cross-recognition trust architecture (paper 5);</li>
+<li><strong>Units and quantities</strong> — the ISO 80000 → UnitsDB/UnitsML chain,
+closing the unit-binding gap that runs through the whole EN series.</li>
+</ul>
+<p>Identifier discipline: items are identified per <strong>ISO/IEC 15459</strong> (with
+IRDI retained as a legacy alias), and every reference is a
+<span class="mono">(register, item, version)</span> triple with one canonical resolvable
+URI form. Cross-register mappings (e.g., an EN data element to its UNTDED and UNTP
+counterparts) are themselves registered items under the 19135 harmonization mechanism —
+mapping is content, not prose. The same mechanism carries two further mapping classes
+observed to be load-bearing in deployed systems. <strong>Standard-equivalence
+mappings</strong>: certificates cite national standards (GB 4943.1-2022 ≈ IEC 62368-1),
+and a foreign verifier needs a registered equivalence claim with an attestor —
+conformity-evidence translation is a profile/transform problem, not prose. And
+<strong>carrier-profile translation rules</strong> as registered transforms, so that a
+passport resolvable through one national code format verifies against another's
+expectations without re-issuance.</p>
+<p>Finally, the registry carries <strong>dormant identifiers</strong>. Inputs are
+recorded at the finest identifier granularity available — (scheme, lot or serial,
+count) — even where no passport yet exists behind them: when a future regime issues
+passports for that object class (cells, modules, materials), it <strong>adopts the
+recorded dormant identifiers</strong> rather than minting new ones and orphaning the
+installed base. Dormant → live adoption connects the entire installed base
+retrospectively through build records; retrospective issuance proceeds
+issue-by-records or issue-on-first-touch, with retroactive applicability already
+carried by dated bindings (invariants I1 and I3 of paper 1).</p>
+</section>
+
+<section id="protocol">
+<h2><span class="no">04 · Resolution protocol</span>The dictionaryReference contract</h2>
+<p>The vacancy of §4.3 is filled by making
+<span class="mono">dictionaryReference</span> a protocol, not a URL convention.
+Resolution of a canonical item URI returns a signed bundle comprising:</p>
+<ol>
+<li>the <strong>definition</strong> (human-readable, multilingual where the source
+register provides it) and its structured machine form;</li>
+<li>the exact <strong>version</strong>, with its predecessor/successor chain;</li>
+<li>the register <strong>status</strong> (valid / superseded / retired) and effective
+dates — enabling "was this definition in force when the passport was validated"
+queries;</li>
+<li>the <strong>trust chain</strong> binding the item to its register's signing
+authority.</li>
+</ol>
+<p>Representation is by content negotiation among <strong>CDDAL (plain text),
+JSON-LD and XML</strong>. Versioned definitions are immutable and therefore perfectly
+cacheable; mirrors and national hosts replicate them freely, carrying log-anchored
+inclusion proofs so a verifier never depends on the origin server's availability.
+Offline and failure semantics follow the framework's degradation ladder: cached
+definitions with as-of stamps, evidentiary mode when anchors cannot be reached.
+Profiles pin registry versions at verification time — deterministic replay of a
+validation requires the same definitions that were in force at the audited moment.</p>
+</section>
+
+<section id="cddal">
+<h2><span class="no">05 · Dictionary technology</span>CDDAL canonicalization and machine validation</h2>
+<p>Dictionaries will not be monolithic: multiple hosts — including national ones — hold
+CDD/IEC 61360-62656-class content. Exchange between hosts uses <strong>CDDAL</strong>
+as the plain-text serialization of that content, with a <strong>normative
+canonicalization rule</strong> so that a definition's hash is stable across hosts: two
+mirrors of item version <span class="mono">(R, D, v)</span> produce byte-identical
+canonical forms. Cross-dictionary comparison, conformance tooling and audit all reduce
+to hashing. OpenCDD (operated by ELF) provides the open reference implementation of the
+stack; EXPRESS-encoded content is validated with expressir; whole semantic models are
+exchanged as registered, checksummed artifacts.</p>
+<div class="callout amber">
+<p><strong>Why registration must be machine-checked.</strong> The converted corpus
+shows that hand-maintained, machine-resolvable identifiers do not survive editorial
+processes unassisted: published consortium specifications contain semanticId fields
+with typographical defects, broken path segments, and swapped identifiers, and one
+specification's mapping table cites "EN 1822:2026" — a missing digit in a normative
+citation. None of these would survive an automated lint at registration. Register
+admission shall therefore include syntactic validation, reference resolution, and
+canonicalization round-trip as mandatory gates — the same discipline EN 18223 asks of
+others applied to the registry itself.</p>
+</div>
+</section>
+
+<section id="requirements">
+<h2><span class="no">06 · Requirements</span>Consolidated statements</h2>
+<p>The following statements are proposed as the normative core of NWIP-2. "Shall"
+expresses a requirement on any conforming registry deployment.</p>
+<table>
+<tr><th style="width:9%">ID</th><th>Requirement</th></tr>
+<tr><td>R1</td><td>The registry <strong>shall</strong> operate as a principal register with federated subregisters under the governance roles and item lifecycle of ISO 19135:2025 (FERIN).</td></tr>
+<tr><td>R2</td><td>Every item <strong>shall</strong> carry an identifier per ISO/IEC 15459 and be referenceable as a (register, item, version) triple with one canonical resolvable URI; IRDI is supported as a legacy alias.</td></tr>
+<tr><td>R3</td><td>Item versions <strong>shall</strong> be immutable; correction occurs by supersession, and superseded versions remain resolvable with status and effective dates.</td></tr>
+<tr><td>R4</td><td>The data-element subregister <strong>shall</strong> be seeded from UNTDED, with national registration authorities as federated subregisters.</td></tr>
+<tr><td>R5</td><td><span class="mono">dictionaryReference</span> resolution <strong>shall</strong> return definition, exact version, register status and trust chain, by content negotiation over CDDAL, JSON-LD and XML.</td></tr>
+<tr><td>R6</td><td>Profiles and passports <strong>shall</strong> pin registry item versions at validation/verification time, enabling deterministic as-of replay.</td></tr>
+<tr><td>R7</td><td>Divergent regional regulations <strong>shall</strong> be registered as distinct items harmonized to a common concept by registered cross-register mappings; redefinition of another jurisdiction's item is not permitted.</td></tr>
+<tr><td>R8</td><td>Subregisters <strong>shall</strong> exist for data elements, jurisdiction/sector profiles, cryptographic suites, trust anchors/master-list entries, and units and quantities (ISO 80000 → UnitsDB/UnitsML).</td></tr>
+<tr><td>R9</td><td>Host-to-host exchange <strong>shall</strong> use CDDAL with a normative canonicalization rule producing host-stable definition hashes.</td></tr>
+<tr><td>R10</td><td>Mirrors <strong>shall</strong> serve cached definitions with log-anchored inclusion proofs; verification <strong>shall not</strong> depend on the availability of the origin host.</td></tr>
+<tr><td>R11</td><td>Register admission <strong>shall</strong> enforce machine validation: syntax, reference resolution, and canonicalization round-trip.</td></tr>
+<tr><td>R12</td><td>Conformance <strong>shall</strong> be defined by conformance classes (register operator, subregister operator, mirror, client) with a published executable test suite.</td></tr>
+</table>
+<p>Two boundaries are equally normative. First, the registry registers <em>meanings,
+their versions and their mappings</em> — it does not host passports, keys or events;
+those live in the resolution, trust and event layers with which it is federated.
+Second, the semantic registry and the trust registry (paper 5) are siblings under the
+same 19135 registration discipline: one governs what data means, the other governs who
+is trusted to say it. Neither subordinates to the other.</p>
+</section>
+
+<section id="conformance">
+<h2><span class="no">07 · Conformance and pilot</span>Proving the requirements executable</h2>
+<p>The requirements are accompanied by an open conformance and demonstration stack:
+the FERIN register operations (Enosema) as operator reference; OpenCDD as dictionary
+technology (ELF); UNTDED as seed content (UN/CEFACT / ISO/TC 154 N1727); expressir
+validation for EXPRESS content; and registry clients in the UniDPP reference
+implementation (paper 4) exercising R1–R12 against a public test register. The pilot
+proposed to JTC 5 is deliberately small: register the EN 18223 data-element set as
+versioned items with UNTDED mappings, add one divergent jurisdiction item (a
+substance-restriction list entry) with its harmonization mapping, and demonstrate
+as-of resolution across a supersession — the minimum evidence that the vacancy of
+§4.3 is closed, not merely described.</p>
+</section>
+
+<section id="refs" class="refs">
+<h2><span class="no">08 · References</span></h2>
+<ol>
+<li>EN 18223, Digital Product Passport — semantic model, §4.1, §4.3, §5.2 (CEN-CLC/JTC 24).</li>
+<li>ISO 19135:2025, Procedures for item registration (FERIN federated register model).</li>
+<li>ISO/IEC 15459 series, unique identifiers.</li>
+<li>UNTDED, United Nations Trade Data Element Directory; ISO/TC 154 N1727.</li>
+<li>IEC 61360 / ISO/IEC 62656, dictionary content model; CDDAL serialization; OpenCDD.</li>
+<li>ISO 80000 quantities and units; UnitsDB; UnitsML.</li>
+<li>ISO 10303-11 (EXPRESS) and expressir.</li>
+<li>Companion papers 1, 4 and 5 of this series.</li>
+</ol>
+</section>
+
+</main>
+<footer>
+<div class="wrap" style="padding:0 2rem;">
+<p style="margin-bottom:0.5rem;">Drafting: ISO/TC 154, Enosema, UN/CEFACT, with ELF — in the UniDPP framework (multi-body stewardship; Apache-2.0/MIT per repository).</p>
+<p style="margin-bottom:0;">Paper 2 of 6 · semantic-registry-requirements.html · 2026-09-07</p>
+</div>
+</footer>
+</body>
+</html>

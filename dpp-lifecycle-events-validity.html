@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DPP lifecycle, events and validity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+--paper: #faf7f0; --paper-soft: #ffffff; --paper-raised: #f3ede1;
+--ink: #101a2b; --ink-soft: #3a4a63; --ink-muted: #6b7a92;
+--rule: #dcd2bd; --rule-soft: #ebe4d4;
+--accent: #0f4c81; --accent-soft: rgba(15, 76, 129, 0.08);
+--amber: #b45309; --navy: #0a1628; --sky: #8fb8e8; --grid: rgba(10, 22, 40, 0.045);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+background: var(--paper);
+background-image:
+linear-gradient(var(--grid) 1px, transparent 1px),
+linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+background-size: 32px 32px;
+color: var(--ink); line-height: 1.65; -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 2rem; }
+header.hero {
+background: linear-gradient(160deg, #060e1c 0%, #0a1628 55%, #14233d 100%);
+color: #f5efe4; padding: 4.5rem 0 3.5rem; border-bottom: 3px solid var(--accent);
+}
+.hero .eyebrow {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em;
+text-transform: uppercase; color: var(--sky); margin-bottom: 1.25rem;
+}
+.hero h1 {
+font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 500; line-height: 1.12;
+letter-spacing: -0.015em; margin-bottom: 1.25rem;
+}
+.hero .lede { font-size: 1.12rem; color: #c2cad8; max-width: 44rem; font-weight: 300; }
+.hero .lede strong { color: #f5efe4; font-weight: 500; }
+.hero .meta {
+margin-top: 2rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+color: #8d9bb4; letter-spacing: 0.04em;
+}
+main { padding: 3.5rem 0 4rem; }
+section { margin-bottom: 4rem; }
+h2 {
+font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+letter-spacing: -0.01em; margin-bottom: 1.4rem; color: var(--ink); padding-top: 1rem;
+}
+h2 .no {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent);
+letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.5rem;
+font-weight: 500;
+}
+h3 {
+font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600;
+margin: 2rem 0 0.75rem; color: var(--ink);
+}
+p { margin-bottom: 1.1rem; color: var(--ink-soft); }
+p strong, li strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 1.2rem 1.4rem; color: var(--ink-soft); }
+li { margin-bottom: 0.55rem; }
+.callout {
+background: var(--paper-soft); border: 1px solid var(--rule);
+border-left: 3px solid var(--accent); border-radius: 6px;
+padding: 1.25rem 1.5rem; margin: 1.6rem 0;
+}
+.callout.amber { border-left-color: var(--amber); background: #fffdf6; }
+.callout p:last-child { margin-bottom: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th {
+text-align: left; font-weight: 600; color: var(--ink);
+border-bottom: 2px solid var(--rule); padding: 0.5rem 0.75rem 0.5rem 0;
+}
+td { border-bottom: 1px solid var(--rule-soft); padding: 0.6rem 0.75rem 0.6rem 0; color: var(--ink-soft); vertical-align: top; }
+td:first-child { font-weight: 600; color: var(--ink); }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; }
+.refs ol { margin-left: 1.4rem; font-size: 0.88rem; color: var(--ink-soft); }
+.refs li { margin-bottom: 0.4rem; }
+footer { border-top: 1px solid var(--rule); padding: 2.5rem 0 3rem; color: var(--ink-muted); font-size: 0.85rem; }
+@media print {
+@page { size: A4; margin: 20mm 24mm 22mm 24mm; }
+body { background: #fff; background-image: none; }
+h2, h3 { page-break-after: avoid; }
+figure, .callout { page-break-inside: avoid; }
+tr { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="eyebrow">ISO/IEC JTC 5 · Digital Product Passport · Technical contribution · Paper 3 of 6</div>
+<h1>DPP lifecycle, events and validity</h1>
+<p class="lede">A post-sale event taxonomy, state machine and validity model for the
+Digital Product Passport: sixteen typed events, the state machine for
+<span class="mono">dppStatus</span>, the temporal profile of ISO 8601, and as-of
+query semantics — <strong>the operations layer that EN 18223 §4.2 mandates and the
+series never specifies</strong>.</p>
+<div class="meta">
+CalConnect — in the UniDPP framework · with ISO/TC 154 and OIML as supporting bodies<br>
+2026-09-07 · Proposed input to JTC 5 workstream B
+</div>
+</div>
+</header>
+<main class="wrap">
+
+<section id="scope">
+<h2><span class="no">01 · Scope and method</span>From a mandated log to a model</h2>
+<p>EN 18223 §4.2 mandates change logging — each change recorded with identifier,
+timestamp, actor and changed properties — and §4.1.2.1 gives example values for
+<span class="mono">dppStatus</span> (active, inactive, archived, invalid) without an
+enumeration, a state machine or transition rules. EN 18246 §4.7 requires that every
+creation, modification and deletion be logged non-repudiablely with an identifiable
+editor. EN 18221 requires historical state be preserved and archived. What no document
+in the series supplies is the <em>model</em>: what kinds of things happen to a passport
+after first sale, who may append them, how status changes, and what was legally true at
+a given time.</p>
+<p>This contribution supplies that model. It was derived by converting the full EN and
+CWA corpus and the IDTA submodel set to machine-readable form, extracting every
+lifecycle-relevant clause, and reconciling the three incompatible lifecycle taxonomies
+found in the series (the identifier granularity model of EN 18219, the nine-phase model
+of EN 18239 Annex A, and the ISO 14040-lineage model used by the EN 18223/18220/18219
+terms). The proposal is offered as workstream B input and as the normative core of a
+prospective lifecycle standard.</p>
+<p>Three design rules govern everything that follows: <strong>nothing is ever edited
+in place</strong> — every post-first-sale change is an appended event; <strong>the
+event log is the authoritative record</strong>, log-anchored and distributed; and
+<strong>corrections never rewrite</strong> — a correction is a new event that supersedes
+a prior value while preserving it in the log.</p>
+</section>
+
+<section id="taxonomy">
+<h2><span class="no">02 · The event taxonomy</span>Sixteen typed events</h2>
+<p>Each event type fixes what changes and which role appends it. Roles are those of
+EN 18239 (dealer, distributor, refurbisher, transfer of responsibility) extended with
+the framework's accredited-actor pattern for regulated claims.</p>
+<table>
+<tr><th style="width:8%">ID</th><th style="width:30%">Event</th><th>What changes</th><th style="width:22%">Appender (role)</th></tr>
+<tr><td>E1</td><td>custody.transfer</td><td>Custody link only (resale, lease, inheritance, liquidation).</td><td>Custodian + counterparty</td></tr>
+<tr><td>E2</td><td>part.replace</td><td>Old child reference marked removed; new child reference added; bill-of-materials instance updated.</td><td>Repairer</td></tr>
+<tr><td>E3</td><td>repair.perform</td><td>Repair record plus consumed parts (E2 within).</td><td>Repairer</td></tr>
+<tr><td>E4</td><td>product.modify</td><td>Instance facts; may spawn a derived type (E4b) with mandatory profile re-evaluation.</td><td>Accredited modifier</td></tr>
+<tr><td>E5</td><td>software.update / feature.unlock</td><td>Firmware/software version vector; capability enablement changes declared characteristics without physical change.</td><td>EO or service</td></tr>
+<tr><td>E6</td><td>upgrade.install</td><td>New child reference.</td><td>Installer</td></tr>
+<tr><td>E7</td><td>refurbish / remanufacture</td><td>Condition grade; remanufacture may be a transformation event producing a new type.</td><td>Refurbisher (EN 18239 role)</td></tr>
+<tr><td>E8</td><td>consumable.replace</td><td>Child references, possibly regulated child passports (tyres, filters — recurring).</td><td>Any, per profile</td></tr>
+<tr><td>E9</td><td>recall.campaign</td><td>Campaign reference; downstream traversal of the provenance DAG and custodian notification.</td><td>Regulator or EO</td></tr>
+<tr><td>E10</td><td>correction (administrative)</td><td>New corrected fact with reason; prior value preserved in the log.</td><td>EO with attestation</td></tr>
+<tr><td>E11</td><td>status.change</td><td>State-machine transition with authority check (suspend, invalidate, reinstate).</td><td>Regulator or EO per profile</td></tr>
+<tr><td>E12</td><td>flag.security</td><td>Theft/loss blacklist entry; police report as a stamp.</td><td>Authority + registry</td></tr>
+<tr><td>E13</td><td>decompose (end-of-life)</td><td>Inverse transformation, 1→N, producing material passports.</td><td>Recycler (accredited for claims)</td></tr>
+<tr><td>E14</td><td>inspection.stamp</td><td>Lens-scoped attestation over subject state.</td><td>Any verifier</td></tr>
+<tr><td>E15</td><td>milestone.record</td><td>Edge-segment state commitment (usage counters).</td><td>Device</td></tr>
+<tr><td>E16</td><td>end-of-waste</td><td>Legal state transition by which waste ceases to be waste under applicable criteria — the passport-issuance boundary at which the material re-qualifies and a secondary-raw-material passport is issued.</td><td>Recycler; criteria per profile</td></tr>
+</table>
+<p>Four cross-cutting rules bind the taxonomy. <strong>Re-evaluation:</strong>
+modifications and feature unlocks trigger re-running of the applicable profile's
+validation package, with a transitional "non-conformant pending re-evaluation" status
+and regulator notification per profile. <strong>Recall propagation:</strong> recalls
+traverse the provenance DAG downstream and notify custodians — no EN implements this;
+EN 18239 names take-back as a stage only — and the recall set is never enumerated
+centrally: the predicate is published, each custodian evaluates it locally (dark
+holdings under national procedure), and the initiator receives aggregates or nothing —
+predicate-based recall, not traversal-push enumeration. <strong>Transformation:</strong> splits,
+combinations and decompositions are typed events with quantity semantics — outputs
+carry input references with quantities and as-of state hashes, inputs transition to
+consumed/transformed while remaining verifiable for as-of queries, and mass balance is
+auditable. <strong>Carrier replacement:</strong> re-issuing a physical carrier (QR
+reissue) is a registry event on unchanged identity.</p>
+<p><strong>Installation is its own event semantics, not generic containment.</strong>
+An install event records child, parent, method, slot identity, pairing (none, firmware,
+key or module), any permanent alteration (soldered, welded, potted — possibly
+unrecoverable) and the performer: an installed, fastened component is a different
+legal object from the standalone one, with re-scoped warranty, parent-scoped slot
+identity and second-hand-once-removed status. Knowledge is bidirectional — the
+parent's manifest lists children; the child's log records its installation interval —
+because installation history is value-relevant provenance (a harvested battery sold
+standalone carries its in-vehicle history) and routes recalls, service access and
+end-of-life. A <strong>recoverability spectrum</strong> governs identity continuity:
+<em>restorable</em> (the child resumes standalone life), <em>harvestable</em>
+(recovered but altered — continues with harvested status and parent history),
+<em>destructive</em> (the child ceases; flows to a material passport as a
+transformation), <em>absorbing</em> (identity dissolves — recorded at finest
+granularity as dormant identifiers for later adoption). The rule: disassembly that
+restores a marketable object with identity continuity is installation; identity
+dissolution is a transformation event. Part replacement is accordingly
+<strong>uninstall plus install</strong> — two events, with the bill-of-materials
+instance updated.</p>
+</section>
+
+<section id="matrix">
+<h2><span class="no">03 · EN support matrix</span>What the series provides today</h2>
+<p>The table below records, per EN of the series, the post-sale support found in the
+converted texts and the residual gap. It was compiled from full-text conversions and is
+reproducible from the published documents.</p>
+<table>
+<tr><th style="width:12%">EN</th><th style="width:46%">Post-sale support in the text</th><th>Gap</th></tr>
+<tr><td>18239</td><td>Best in series: lifecycle stages including maintaining, repairing, upgrading, refurbishing (Annex A); a repair-update example in the Introduction; roles with read-write rights (refurbisher §6.2); base roles from delegated acts (§5.2.8); delegation and emergency revocation.</td><td>Stages are a taxonomy, not operations: no event types, part swaps, firmware changes, derived types, theft handling or corrections.</td></tr>
+<tr><td>18223</td><td>§4.2 acknowledges change of property and addition; logging fields (identifier, timestamp, actor, changed properties); example <span class="mono">dppStatus</span> values.</td><td>No event kinds, no transitions, no child references, no software/hardware versioning.</td></tr>
+<tr><td>18246</td><td>§4.7: any creation, modification or deletion logged non-repudiablely, editor identifiable; compromised-data flagging.</td><td>Generic logging only; no event semantics.</td></tr>
+<tr><td>18221</td><td>Historical state preservation and archiving of every change; persistence beyond the operator.</td><td>Change-kind agnostic (maps to the framework's Tier C).</td></tr>
+<tr><td>18219</td><td>Identifier persistence across ownership change.</td><td>No identifier lifecycle events; battery/child swap unaddressed.</td></tr>
+<tr><td>18220</td><td>—</td><td>Carrier replacement and reissue absent.</td></tr>
+<tr><td>18216</td><td>—</td><td>Transport security only.</td></tr>
+<tr><td>18222</td><td>Life Cycle API exists in outline (§4.1–4.8) plus Registry API.</td><td>Generic operations; no event vocabulary.</td></tr>
+<tr><td>Context</td><td>EU right-to-repair Directive (EU) 2024/1799; IDTA content submodels 02018/02036/02048/02007/02019 cover <em>content</em> (maintenance instructions, change notifications, software nameplate).</td><td>Content is not passport mechanics: no EN connects repair events to passport state.</td></tr>
+</table>
+<p>The verdict is factual, not rhetorical: the series <em>acknowledges</em> the
+post-sale world — EN 18239's stages, EN 18223 §4.2, EN 18246 §4.7 — and specifies
+<strong>zero operations</strong>. The taxonomy of §2 is proposed as the normative
+content that closes this gap.</p>
+</section>
+
+<section id="state">
+<h2><span class="no">04 · The state machine</span>Legitimate status transitions</h2>
+<p><span class="mono">dppStatus</span> becomes a closed enumeration with defined
+transitions, each carrying an authority check:</p>
+<ul>
+<li><strong>active</strong> — the normative operating state; entered at issuance
+(issuer role) or reinstatement (E11, authority role).</li>
+<li><strong>suspended</strong> (transitional "non-conformant pending re-evaluation"
+included) — entered by E4/E5 re-evaluation or regulator action; exit is active
+(re-evaluation pass) or invalid.</li>
+<li><strong>inactive</strong> — the subject is not currently placed on the market
+(e.g., storage, export); reversible.</li>
+<li><strong>invalid</strong> — terminal for the version: authority-checked E11
+(regulator or EO per profile), misissuance findings, or adjudicated fraud; the event
+log remains verifiable.</li>
+<li><strong>archived</strong> — Tier C archival state (EN 18221/OAIS); read-only,
+retained for the legally required horizon.</li>
+</ul>
+<p>Two rules keep the machine honest. Status changes are <strong>events</strong>
+(E11), never field writes: the log records who held the authority and under which
+profile. And <strong>profile growth never changes identity</strong>: adding a new
+jurisdiction's profile to an existing product is a registry applicability event with an
+effective window — including retroactive flags where the law says so — not a new
+passport.</p>
+</section>
+
+<section id="time">
+<h2><span class="no">05 · Time and validity</span>ISO 8601, ISO 34000, as-of queries</h2>
+<p>The time basis is the one the series already cites normatively: <strong>ISO
+8601-1 and ISO 8601-2, including Amendment 1</strong> (time deviations), with
+<strong>ISO 34000</strong> supplying the event vocabulary. All timestamps are UTC with
+explicit offset handling; the framework's test suite rejects the defects observed in
+the corpus (an Annex B example in EN 18223 prints an invalid timestamp using en-dashes
+in the very clause that teaches the format — validator-enforced, not
+publication-hoped).</p>
+<p>Validity is modelled with two authoritative query modes, because the law needs
+both:</p>
+<ul>
+<li><strong>Live view</strong> — the current state of the passport, with every element
+labelled by freshness (staleness is a displayed verdict, never silence).</li>
+<li><strong>As-of snapshot</strong> — the notarized, log-anchored reconstruction of
+what was legally true at time T: "was this product compliant with profile P when sold
+in 2028?" As-of answers are reproducible because event order is total in the anchored
+log and registry versions are pinned per validation.</li>
+</ul>
+<p>Between the two sit the <strong>three verification readings</strong> defined in
+paper 5 (evidentiary, current-state, cryptographic); verdicts state which reading they
+answer. Retroactivity of revocation follows the reason taxonomy there: prospective
+reasons preserve pre-event as-of validity; retroactive reasons (misissuance, fraud)
+void it ab initio within an explicit window.</p>
+<p>Freshness requirements are gated by capability class (paper 1, §04): profiles
+declare, per data element, the required truth mode (attest-sampled, self-committed, or
+both with precedence), and the requirement must be satisfiable by the class — an S0
+(silent, testimony-only) product cannot satisfy a live-freshness profile.</p>
+</section>
+
+<section id="refs" class="refs">
+<h2><span class="no">06 · References</span></h2>
+<ol>
+<li>EN 18223 §4.1.2.1, §4.2; EN 18239 Annex A, §5.2.8, §6.2; EN 18246 §4.7; EN 18221; EN 18219; EN 18222 §4.1–4.8.</li>
+<li>ISO 8601-1:2019 and ISO 8601-2:2019 including Amd 1; ISO 34000 (event vocabulary).</li>
+<li>Directive (EU) 2024/1799 (right to repair); CWA 18291 (actor–event catalogue).</li>
+<li>ISO/IEC 15459 (identifiers); OAIS (ISO 14721) reference model for archival.</li>
+<li>Companion papers 1, 2 and 5 of this series.</li>
+</ol>
+</section>
+
+</main>
+<footer>
+<div class="wrap" style="padding:0 2rem;">
+<p style="margin-bottom:0.5rem;">Drafting: CalConnect — in the UniDPP framework (multi-body stewardship; Apache-2.0/MIT per repository).</p>
+<p style="margin-bottom:0;">Paper 3 of 6 · dpp-lifecycle-events-validity.html · 2026-09-07</p>
+</div>
+</footer>
+</body>
+</html>

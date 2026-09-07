@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>An international framework for the Digital Product Passport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+--paper: #faf7f0;
+--paper-soft: #ffffff;
+--paper-raised: #f3ede1;
+--ink: #101a2b;
+--ink-soft: #3a4a63;
+--ink-muted: #6b7a92;
+--rule: #dcd2bd;
+--rule-soft: #ebe4d4;
+--accent: #0f4c81;
+--accent-soft: rgba(15, 76, 129, 0.08);
+--amber: #b45309;
+--navy: #0a1628;
+--sky: #8fb8e8;
+--grid: rgba(10, 22, 40, 0.045);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+background: var(--paper);
+background-image:
+linear-gradient(var(--grid) 1px, transparent 1px),
+linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+background-size: 32px 32px;
+color: var(--ink);
+line-height: 1.65;
+-webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 2rem; }
+header.hero {
+background: linear-gradient(160deg, #060e1c 0%, #0a1628 55%, #14233d 100%);
+color: #f5efe4;
+padding: 4.5rem 0 3.5rem;
+border-bottom: 3px solid var(--accent);
+}
+.hero .eyebrow {
+font-family: 'IBM Plex Mono', monospace;
+font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+color: var(--sky); margin-bottom: 1.25rem;
+}
+.hero h1 {
+font-family: 'Fraunces', serif;
+font-size: 2.7rem; font-weight: 500; line-height: 1.12;
+letter-spacing: -0.015em; margin-bottom: 1.25rem;
+}
+.hero .lede { font-size: 1.15rem; color: #c2cad8; max-width: 44rem; font-weight: 300; }
+.hero .lede strong { color: #f5efe4; font-weight: 500; }
+.hero .meta {
+margin-top: 2rem; font-family: 'IBM Plex Mono', monospace;
+font-size: 0.78rem; color: #8d9bb4; letter-spacing: 0.04em;
+}
+main { padding: 3.5rem 0 4rem; }
+section { margin-bottom: 4rem; }
+h2 {
+font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+letter-spacing: -0.01em; margin-bottom: 1.4rem; color: var(--ink);
+padding-top: 1rem;
+}
+h2 .no {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent);
+letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.5rem;
+font-weight: 500;
+}
+h3 {
+font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600;
+margin: 2rem 0 0.75rem; color: var(--ink);
+}
+p { margin-bottom: 1.1rem; color: var(--ink-soft); }
+p strong, li strong { color: var(--ink); font-weight: 600; }
+ul { margin: 0 0 1.2rem 1.4rem; color: var(--ink-soft); }
+li { margin-bottom: 0.55rem; }
+.callout {
+background: var(--paper-soft); border: 1px solid var(--rule);
+border-left: 3px solid var(--accent); border-radius: 6px;
+padding: 1.25rem 1.5rem; margin: 1.6rem 0;
+}
+.callout.amber { border-left-color: var(--amber); background: #fffdf6; }
+.callout p:last-child { margin-bottom: 0; }
+.figure {
+background: var(--paper-soft); border: 1px solid var(--rule); border-radius: 8px;
+padding: 1.75rem 1.5rem 1.25rem; margin: 2rem 0;
+}
+.figure svg { width: 100%; height: auto; display: block; }
+.figure figcaption {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--ink-muted);
+letter-spacing: 0.06em; margin-top: 1rem; padding-top: 0.75rem;
+border-top: 1px solid var(--rule-soft);
+}
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th {
+text-align: left; font-weight: 600; color: var(--ink);
+border-bottom: 2px solid var(--rule); padding: 0.5rem 0.75rem 0.5rem 0;
+}
+td { border-bottom: 1px solid var(--rule-soft); padding: 0.6rem 0.75rem 0.6rem 0; color: var(--ink-soft); vertical-align: top; }
+td:first-child { font-weight: 600; color: var(--ink); }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; }
+.refs ol { margin-left: 1.4rem; font-size: 0.88rem; color: var(--ink-soft); }
+.refs li { margin-bottom: 0.4rem; }
+footer {
+border-top: 1px solid var(--rule); padding: 2.5rem 0 3rem;
+color: var(--ink-muted); font-size: 0.85rem;
+}
+@media print {
+@page { size: A4; margin: 20mm 24mm 22mm 24mm; }
+body { background: #fff; background-image: none; }
+section { page-break-before: auto; }
+h2, h3 { page-break-after: avoid; }
+figure, .callout { page-break-inside: avoid; }
+tr { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="eyebrow">ISO/IEC JTC 5 · Digital Product Passport · Position paper · Paper 1 of 6</div>
+<h1>An international framework for the Digital Product Passport</h1>
+<p class="lede">A joint position on the architecture of an international Digital Product
+Passport (DPP): fourteen design invariants, a profile ("lens") model for multi-jurisdiction
+operation, and a proposal for what ISO/IEC JTC 5 should standardize —
+<strong>the mechanism, not any single jurisdiction's envelope</strong>.</p>
+<div class="meta">
+CalConnect · ISO/TC 154 · OIML · ELF — joint drafting consortium, in the UniDPP framework<br>
+2026-09-07 · Offered as a liaison contribution to the ISO/IEC JTC 5 inaugural meeting (agenda items 11/13)
+</div>
+</div>
+</header>
+<main class="wrap">
+
+<section id="intro">
+<h2><span class="no">01 · Introduction</span>Scope and submission context</h2>
+<p>ISO/IEC JTC 5, <em>Digital Product Passport</em>, inherits two partially incompatible
+asset bases: the European EN 18216–18246 series prepared by CEN-CLC/JTC 24 under the
+Ecological Design for Sustainable Products Regulation (ESPR), and AWI ISO 25534-1,
+which splits into a vocabulary Part 1 and a Part 2 addressing the passport itself. A
+third body of practice — the IDTA submodel templates, the UN Transparency Framework
+(UNTP), and national platforms such as the GS1 China commodity QR-code service — is
+already deployed in the field.</p>
+<p>This paper states the joint position of the drafting consortium in one sentence:
+<strong>JTC 5 should standardize the neutral mechanism by which many legal regimes
+share one product record, and should decline to make any single regime the universal
+envelope.</strong> The position is developed from a complete converted corpus of the
+eight ENs, two CWAs, 77 IDTA specifications, AWI 25534-1 and the JTC 5 plenary document
+set, and from running reference-implementation work (UniDPP) reported separately as
+paper 4 of this series.</p>
+<p>Four companion contributions accompany this paper: semantic registry requirements
+(paper 2), lifecycle events and validity (paper 3), the reference implementation report
+(paper 4), cross-recognition trust (paper 5) and the terminology dataset announcement
+(paper 6).</p>
+</section>
+
+<section id="problem">
+<h2><span class="no">02 · The problem</span>Four findings that define the work</h2>
+
+<h3>2.1 The core noun is normatively contested</h3>
+<p>The EN series defines the DPP as a <em>"digital record of product characteristics
+throughout its life cycle"</em>. AWI 25534-1 defines it as <em>"a concept or technology
+which enables sharing of product related information"</em>. One definition names a
+record; the other names a capability. Both texts are normative in their respective
+systems, and neither cites the other. Terminology is therefore not a housekeeping item:
+the two systems cannot interoperate until the object of standardization is agreed. The
+consortium addresses this in paper 6 with a harvested terminology dataset proposed as
+the single source of truth for a Part 1 (Vocabulary).</p>
+
+<h3>2.2 The semantic layer is a named vacancy</h3>
+<p>EN 18223 §4.3 requires a governed, "regulation-based" semantic repository, and its
+examples are placeholder URLs (<span class="mono">dictionary1.eu</span>). The operator,
+the resolution protocol, caching, offline behaviour and failure semantics are unspecified.
+Every <span class="mono">dictionaryReference</span> in the series points into this
+vacancy. Paper 2 proposes the filling: ISO 19135:2025 federated register governance,
+the UNTDED data-element seed, a resolution protocol, and CDDAL canonicalization.</p>
+
+<h3>2.3 The event layer is mandated but not modelled</h3>
+<p>EN 18223 §4.2 mandates change logging (identifier, timestamp, actor, changed
+properties) and §4.1.2.1 gives example values for <span class="mono">dppStatus</span>
+(active / inactive / archived / invalid) — but the series defines no event types, no
+state machine, no transition rules, and no validity semantics. The legally decisive
+field of the passport is undefined. Paper 3 supplies the 16-event post-sale taxonomy and
+the state machine.</p>
+
+<h3>2.4 One product, many jurisdictions — by design, not by exception</h3>
+<p>A product placed on the world market is simultaneously subject to EU delegated acts
+(textiles 2026; the registry implementing act due 30/06/2027; steel 30/07/2027), China's
+CCC and China-RoHS regimes under GB standards, Japan's METI/PSE/Top Runner rules,
+Korea's KC certification, United States state and federal-procurement rules, and UKCA.
+A single physical passport must therefore carry <strong>many jurisdiction profiles at
+once, each independently governed, trusted, versioned and served</strong>, without any
+region being the universal envelope. This is not a new problem: trade documentation has
+solved it repeatedly, and the precedents are citable:</p>
+<ul>
+<li><strong>ePassport (ICAO 9303)</strong> — one document, per-state inspection, and a
+CSCA <strong>master list</strong> of trust anchors for cross-recognition;</li>
+<li><strong>ISO 20022</strong> — a global repository with per-jurisdiction validation
+rule profiles;</li>
+<li><strong>DCAT-AP</strong> — a core specification with governed national profiles;</li>
+<li><strong>UNTDED</strong> — the United Nations Trade Data Element Directory, whose
+historic regional subsets are ISO/TC 154's own decades-long exercise in national
+profiling of a neutral base;</li>
+<li><strong>ISO 10303 (STEP)</strong> — core plus composable application modules;</li>
+<li><strong>GS1 Digital Link resolvers (RFC 9264)</strong> — linksets with per-context
+routing; and <strong>ETSI/eIDAS trusted lists</strong> — jurisdictional trust
+infrastructure with defined cross-use.</li>
+</ul>
+<p>The EN series itself concedes the principle intra-EU: EN 18223 places the data of all
+applicable regulations in one passport. The international framework globalizes that
+principle symmetrically: every jurisdiction's regulation becomes a governed profile of
+one neutral core.</p>
+</section>
+
+<section id="invariants">
+<h2><span class="no">03 · Design invariants</span>Fourteen non-negotiables</h2>
+<p>The framework is specified as invariants — properties every conforming
+implementation must hold — rather than as implementation choices. The fourteen
+invariants are grouped in five families.</p>
+<table>
+<tr><th style="width:12%">ID</th><th style="width:22%">Family</th><th>Invariant</th></tr>
+<tr><td>I1</td><td>Identity &amp; semantics</td><td>One subject, one identity, never re-minted; identifiers may be dormant before use and are later adopted, not replaced.</td></tr>
+<tr><td>I2</td><td>Identity &amp; semantics</td><td>Single definition, many constraints: profiles constrain and transform, never redefine; inter-profile disagreement is expected and auditable; same-class contradiction is an integrity incident.</td></tr>
+<tr><td>I3</td><td>Identity &amp; semantics</td><td>Inputs are recorded at the finest identifier granularity available; dormant identifiers are permitted always.</td></tr>
+<tr><td>I4</td><td>Structure &amp; lifecycle</td><td>Append-only event sourcing: the distributed, log-anchored event log is the authoritative record; no single party holds it alone.</td></tr>
+<tr><td>I5</td><td>Structure &amp; lifecycle</td><td>Typed relationship algebra: association, derivation, installation, type-lineage, custody and membership edges carry distinct legal semantics.</td></tr>
+<tr><td>I6</td><td>Structure &amp; lifecycle</td><td>State machine legitimacy: normative statuses, defined transitions, dated applicability including retroactive effect; profile growth never changes identity.</td></tr>
+<tr><td>I7</td><td>Structure &amp; lifecycle</td><td>Passports are issued where legal duty attaches; issuance, hosting, identity, anchoring, archiving and trust are separable duties, and republication never transfers authority.</td></tr>
+<tr><td>I8</td><td>Projection &amp; trust</td><td>The passport is a deterministic, registered, legally-cited projection of the testimonial record; transforms publish uncertainty, rounding and decision rules; no pre-transformed duplicates are stored.</td></tr>
+<tr><td>I9</td><td>Projection &amp; trust</td><td>Graded trust: trust markers, multi-suite signatures, verdicts with coverage reports, three verification readings, revocation reason determines retroactivity, taint propagates through the graph.</td></tr>
+<tr><td>I10</td><td>Sovereignty &amp; neutrality</td><td>Profiles are jurisdiction × sector × characteristic, predicate-triggered, each binding data points, transforms, cryptographic suites, trust, access, presentation and carriers.</td></tr>
+<tr><td>I11</td><td>Sovereignty &amp; neutrality</td><td>No load-bearing proprietary layer: mount, identity, semantics and trust are open ISO/IEC/UN instruments; any proprietary metamodel is confined to informative mappings.</td></tr>
+<tr><td>I12</td><td>Sovereignty &amp; neutrality</td><td>Enumeration resistance: the system is verifiable without being browsable; blind edges by default; proof-of-binding does not imply knowledge-of-parent; logs anchor commitments, not facts.</td></tr>
+<tr><td>I13</td><td>Operation &amp; resilience</td><td>Degradation ladder: Tier A offline minimum, Tier B served, Tier C archival; freshness verdicts degrade explicitly; availability is decoupled from origin servers.</td></tr>
+<tr><td>I14</td><td>Operation &amp; resilience</td><td>Continuity: successions exist for hosts, authorities, schemes, algorithms, profiles and regimes; identities outlive their issuers and hosts.</td></tr>
+</table>
+<p>The invariants are deliberately implementation-neutral: they constrain what any
+conforming system must preserve, not how it is built. The corresponding failure
+evidence — every defect class observed across the corpus — reduces without exception to
+a violation of one or more of these invariants at a layer seam.</p>
+<p>Two invariants deserve plain statement. <strong>I12, enumeration resistance:</strong>
+the system is <strong>verifiable without being browsable</strong> — resolution by
+identity on request, traversal by per-edge rights, blind edges by default, and logs
+that anchor commitments (hashes), never facts; nobody can enumerate the installed base
+of anything, and recalls run by locally evaluated published predicate, never
+traversal-push. <strong>I13, the degradation ladder:</strong> every capability
+degrades cleanly to the document-lookup minimum (carrier, resolver, served page)
+through Tier A (offline minimum), Tier B (served) and Tier C (archival), with staleness
+marked explicitly, never silently.</p>
+<p>Where the layers join, the system cracks; the framework therefore fixes twelve
+<strong>seams</strong>, and every defect in the corpus defect register (AUDIT) is a
+seam failure: S1 carrier↔resolver (code-format translation; GM2D transition); S2
+resolver↔hosts; S3 core↔profiles — the mount, where neutrality is enforced; S4
+profile↔registry; S5 registry↔registry (FERIN federation, CDDAL canonicalization);
+S6 event-log↔transparency-logs (commitment anchoring, salt discipline); S7
+issuer-credentials↔profile-trust-lists; S8 transforms↔engines; S9 parent↔child
+passports; S10 device↔system; S11 Tier A↔Tier B; S12 passport↔adjacent regimes
+(customs/WCO, e-invoicing, EPCIS/UNTP, CIDOC-CRM, ISO 20022).</p>
+</section>
+
+<section id="lens">
+<h2><span class="no">04 · The lens and profile model</span>How many jurisdictions share one record</h2>
+<p>The framework's central abstraction is the <strong>profile as a calibrated lens
+placed on the product's testimonial record</strong> (the digital twin). The scene —
+the append-only record of what is known about the subject — is never altered by
+observation. The lens — a registered, versioned, signed object — selects and transforms
+it: focal length is granularity (model to instance zoom); depth of field is traversal
+depth; the colour filter is the classification transform (the same product is energy
+class "A" in one jurisdiction and "B" in another, and the difference is published as
+decision rules, never hidden); filter stacking is profile composition; the published
+uncertainty budget is a mandatory lens property; and the <strong>mount</strong> — the
+profile interface on the neutral core — is the thing JTC 5 would standardize, so that
+any registered lens by any maker clicks on. A profile is thus not passive glass but a
+<strong>legal measuring instrument</strong>: pattern-approved at registration,
+calibrated by version and cited rules, periodically re-verified by conformance runs —
+the governance vocabulary of legal metrology, applied to data projections.</p>
+<p>Concretely, a profile is a registered, versioned object binding:</p>
+<ul>
+<li>profile identifier and owning regulator, with legal basis and effective dates;</li>
+<li>a data-point list referencing registry items (never inline definitions);</li>
+<li>validation rules and executable transform bindings (unit conversion, derivation,
+aggregation, classification, localization mapping) with published uncertainty,
+rounding and conformity decision rules;</li>
+<li>languages, presentation and carrier requirements;</li>
+<li>trust requirements (accepted suites, trust lists) and access policies in terms of
+the EN 18239 role model;</li>
+<li>a <strong>trigger predicate</strong> — profiles attach by predicate on product
+facts (jurisdiction of sale, sector, and characteristics such as species content,
+heritage status or age thresholds), including time predicates that fire dated
+applicability.</li>
+</ul>
+<p>Composition is three-axial: <strong>jurisdiction × sector × characteristic</strong>.
+The third axis deserves statement. <strong>Characteristic profiles</strong> attach by
+predicate on product facts — age, material content, heritage status, market status —
+rather than by law-of-place or industry, splitting into <strong>regulatory-triggered</strong>
+profiles (CITES species content, cultural-goods import control, conflict-minerals
+origin) and <strong>voluntary value profiles</strong> (provenance and grading for
+antiques and collectibles). Predicate triggers include <strong>time predicates</strong>:
+an object becoming older than a given threshold is a clock-fired applicability event.
+The layers of the architecture are:</p>
+<table>
+<tr><th style="width:16%">Layer</th><th>Function</th></tr>
+<tr><td>L0 Identity</td><td>One unique product identifier per subject (ISO/IEC 15459, EN 18219), with a granularity model of type, batch and item; bridges to GS1, Handle, Ecode and MA schemes; one physical carrier.</td></tr>
+<tr><td>L1 Neutral core</td><td>A deliberately minimal passport skeleton: product and passport identifiers, status, timestamps, profile manifest, event log, signatures. No jurisdiction's fields live in the base. EN 18223's <span class="mono">contentSpecificationIds</span> is the EU's proto-manifest; the framework generalizes it.</td></tr>
+<tr><td>L2 Profiles</td><td>The lens objects described above, composed on the three axes.</td></tr>
+<tr><td>L3 Semantic registry</td><td>Every data point defined once in a federated register per ISO 19135:2025, seeded with UNTDED (paper 2).</td></tr>
+<tr><td>L4 Trust</td><td>Per-jurisdiction trust frameworks, cross-recognized through trust lists and a multi-log master list; profile-bound cryptographic suites including SM, FIPS and post-quantum families (paper 5).</td></tr>
+<tr><td>L5 Resolution</td><td>Resolver linksets (RFC 9264) keyed by profile context, role, language and request region — one carrier, many destinations.</td></tr>
+<tr><td>L6 Regional serving</td><td>In-country DPP service provision (the EN 18221 pattern) where data-residency law requires it.</td></tr>
+</table>
+<div class="callout">
+<p><strong>Neutrality is enforced at the mount, not asserted.</strong> EN 18223 §0.3
+declares the model "technology, ontology and domain agnostic" and EN 18216's scope
+requires operation "without vendor lock-in". The framework implements those stated
+goals: identity, semantics, trust and the profile interface are open ISO/IEC/UN
+instruments, and any proprietary metamodel — including the Asset Administration Shell —
+is confined to a single informative mapping (invariant I11).</p>
+</div>
+<p>Where jurisdictions regulate differently (for example divergent substance-restriction
+lists), they register <strong>distinct data elements harmonized to a common concept</strong>;
+disagreement between profiles is a correct outcome of projecting one canonical record
+under different rules, and is auditable — never silently merged (I2).</p>
+
+<h3>Capability classes and the passive→active twin axis</h3>
+<p>Most products in DPP scope (textiles, mattresses, most batteries) are silent
+objects: no connectivity, no keys. The framework fixes an explicit capability taxonomy
+and gates profile requirements by class: <strong>S0 silent</strong> (testimony-only);
+<strong>S1 passive-auth</strong> (NFC chip, PUF or IEC 61406 identity link — identity
+attestation without logs; the tier EN 18246 explicitly excluded from scope, a named
+gap); <strong>S2 logged-contact</strong> (dumps on physical read, no communications);
+<strong>S3 connected</strong> (full edge segments). Freshness and verification
+requirements must be satisfiable by the class — demanding live freshness from an S0
+product is an unsatisfiable profile. The twin is accordingly <strong>testimonial by
+default, sensorial by exception</strong>, and a silent S0 product must be fully
+servable — through to the Tier-A minimum — with zero device participation ever.</p>
+<p>The deployed national services are the predecessor of the DPP: the
+<strong>passive-twin era</strong>, where state exists only as point-in-time
+attestations and staleness between them is unbounded and undetectable. The
+<strong>active twin</strong> self-reports under device keys: freshness becomes bounded
+and detectable, and the binding question shifts from <em>who saw it</em> to <em>who
+attests the sensor</em>. Passive twin maps to S0–S1, active twin to S2–S3; both coexist
+permanently, with profiles declaring per data element the required <strong>truth
+mode</strong> — attest-sampled, self-committed, or both with precedence.</p>
+
+</section>
+
+<section id="proposal">
+<h2><span class="no">05 · Proposal</span>What we propose JTC 5 adopt</h2>
+<p>The consortium proposes that JTC 5:</p>
+<ol style="margin: 0 0 1.2rem 1.4rem; color: var(--ink-soft);">
+<li style="margin-bottom: 0.7rem;"><strong>Adopt the fourteen invariants as design constraints</strong> for all JTC 5 deliverables, as the check-list against which base-model and profile proposals are reviewed.</li>
+<li style="margin-bottom: 0.7rem;"><strong>Establish a profile-mechanism standard as the flagship work item</strong> — the registered profile object, the manifest schema, the mount, and the as-of applicability machinery — of which the semantic registry (paper 2) is one component. This is the deliverable that makes "your regulation becomes a governed profile, not an extension of another jurisdiction's envelope" operational, and gives every national body a symmetric seat at the table.</li>
+<li style="margin-bottom: 0.7rem;"><strong>Support the Part 1 / Part 2 split of AWI 25534-1</strong> and accept the harvested terminology dataset (paper 6) as input to Part 1, resolving the definitional conflict of §2.1 before Part 2 work proceeds on contested ground.</li>
+<li style="margin-bottom: 0.7rem;"><strong>Fill the EN 18223 §4.3 vacancy</strong> by taking the semantic registry requirements (paper 2) into the relevant workstream as an NWIP, with ISO/TC 154, UN/CEFACT and the FERIN operators as co-sponsors.</li>
+<li style="margin-bottom: 0.7rem;"><strong>Adopt the lifecycle event taxonomy and state machine</strong> (paper 3) as the normative answer to the EN 18223 §4.2 mandate, on the ISO 8601 time basis already normatively referenced by the series.</li>
+<li style="margin-bottom: 0.7rem;"><strong>Take the SIGNATIF cross-recognition architecture</strong> (paper 5) as the workstream D trust input, matching the governance sketch already present in AWI 25534-1, with CNML as the first demonstrated sector realization.</li>
+<li><strong>Register implementation experience</strong> (paper 4) as standing input: conformance methodology, corpus-derived negative test cases, and open reference code.</li>
+</ol>
+<p>Sequencing proposed to the plenary: terminology and the registry first (they unblock
+everything else and are prerequisites of the profile mechanism); lifecycle and trust in
+parallel; the twin-projection doctrine and vertical pilots (OIML measuring instruments
+first) following in 2027, ahead of the EU registry implementing act (30/06/2027) and
+steel delegated act (30/07/2027).</p>
+</section>
+
+<section id="refs" class="refs">
+<h2><span class="no">06 · References</span>Normative and informative citations</h2>
+<ol>
+<li>EN 18216:2026; EN 18219; EN 18220; EN 18221; EN 18222; EN 18223; EN 18239; EN 18246 — Digital Product Passport series, CEN-CLC/JTC 24.</li>
+<li>AWI ISO 25534-1, <em>Digital product passport</em> — Part 1 (vocabulary) / Part 2, ISO/IEC JTC 5.</li>
+<li>ISO 8601-1 and ISO 8601-2 (including Amd 1), date and time representation.</li>
+<li>ISO/IEC 15459 series, unique identifiers; ISO 19135:2025, geographic information — procedures for item registration (FERIN).</li>
+<li>UNTDED, United Nations Trade Data Element Directory (ISO/TC 154 custody).</li>
+<li>RFC 9264, Linkset; ISO 10303-11 (EXPRESS); ISO 10303-242 application protocol.</li>
+<li>ICAO Doc 9303, Machine Readable Travel Documents (CSCA master-list precedent).</li>
+<li>ISO 20022; DCAT-AP; ETSI TS 119 612 (trusted lists).</li>
+<li>Companion papers 2–6 of this series, UniDPP contribution set, 2026-09.</li>
+</ol>
+</section>
+
+</main>
+<footer>
+<div class="wrap" style="padding:0 2rem;">
+<p style="margin-bottom:0.5rem;">Joint drafting consortium: CalConnect (convenor), ISO/TC 154, OIML, ELF — in the UniDPP framework (multi-body stewardship; Apache-2.0/MIT per repository).</p>
+<p style="margin-bottom:0;">Paper 1 of 6 · an-international-framework-for-the-dpp.html · 2026-09-07</p>
+</div>
+</footer>
+</body>
+</html>

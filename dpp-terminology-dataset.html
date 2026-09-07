@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A terminology dataset for the Digital Product Passport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+--paper: #faf7f0; --paper-soft: #ffffff; --paper-raised: #f3ede1;
+--ink: #101a2b; --ink-soft: #3a4a63; --ink-muted: #6b7a92;
+--rule: #dcd2bd; --rule-soft: #ebe4d4;
+--accent: #0f4c81; --accent-soft: rgba(15, 76, 129, 0.08);
+--amber: #b45309; --navy: #0a1628; --sky: #8fb8e8; --grid: rgba(10, 22, 40, 0.045);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+background: var(--paper);
+background-image:
+linear-gradient(var(--grid) 1px, transparent 1px),
+linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+background-size: 32px 32px;
+color: var(--ink); line-height: 1.65; -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 2rem; }
+header.hero {
+background: linear-gradient(160deg, #060e1c 0%, #0a1628 55%, #14233d 100%);
+color: #f5efe4; padding: 4.5rem 0 3.5rem; border-bottom: 3px solid var(--accent);
+}
+.hero .eyebrow {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em;
+text-transform: uppercase; color: var(--sky); margin-bottom: 1.25rem;
+}
+.hero h1 {
+font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 500; line-height: 1.12;
+letter-spacing: -0.015em; margin-bottom: 1.25rem;
+}
+.hero .lede { font-size: 1.12rem; color: #c2cad8; max-width: 44rem; font-weight: 300; }
+.hero .lede strong { color: #f5efe4; font-weight: 500; }
+.hero .meta {
+margin-top: 2rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+color: #8d9bb4; letter-spacing: 0.04em;
+}
+main { padding: 3.5rem 0 4rem; }
+section { margin-bottom: 4rem; }
+h2 {
+font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+letter-spacing: -0.01em; margin-bottom: 1.4rem; color: var(--ink); padding-top: 1rem;
+}
+h2 .no {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent);
+letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.5rem;
+font-weight: 500;
+}
+h3 {
+font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600;
+margin: 2rem 0 0.75rem; color: var(--ink);
+}
+p { margin-bottom: 1.1rem; color: var(--ink-soft); }
+p strong, li strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 1.2rem 1.4rem; color: var(--ink-soft); }
+li { margin-bottom: 0.55rem; }
+.callout {
+background: var(--paper-soft); border: 1px solid var(--rule);
+border-left: 3px solid var(--accent); border-radius: 6px;
+padding: 1.25rem 1.5rem; margin: 1.6rem 0;
+}
+.callout.amber { border-left-color: var(--amber); background: #fffdf6; }
+.callout p:last-child { margin-bottom: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th {
+text-align: left; font-weight: 600; color: var(--ink);
+border-bottom: 2px solid var(--rule); padding: 0.5rem 0.75rem 0.5rem 0;
+}
+td { border-bottom: 1px solid var(--rule-soft); padding: 0.6rem 0.75rem 0.6rem 0; color: var(--ink-soft); vertical-align: top; }
+td:first-child { font-weight: 600; color: var(--ink); }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; }
+.refs ol { margin-left: 1.4rem; font-size: 0.88rem; color: var(--ink-soft); }
+.refs li { margin-bottom: 0.4rem; }
+footer { border-top: 1px solid var(--rule); padding: 2.5rem 0 3rem; color: var(--ink-muted); font-size: 0.85rem; }
+@media print {
+@page { size: A4; margin: 20mm 24mm 22mm 24mm; }
+body { background: #fff; background-image: none; }
+h2, h3 { page-break-after: avoid; }
+figure, .callout { page-break-inside: avoid; }
+tr { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="eyebrow">ISO/IEC JTC 5 · Digital Product Passport · Dataset announcement · Paper 6 of 6</div>
+<h1>A terminology dataset for the Digital Product Passport</h1>
+<p class="lede">Announcing the UniDPP terminology dataset: a machine-readable,
+glossarist-managed concept collection harvested verbatim from the EN 18216–18246
+series, CWA 18291 and IDTA 01001 — every definition carrying its clause-level
+citation, every definitional conflict recorded rather than silently merged — offered
+as the <strong>single source of truth for the vocabulary part of AWI ISO
+25534-1</strong>, with the new-work-item proposal (ISO Form 4) attached under
+CalConnect attribution.</p>
+<div class="meta">
+CalConnect — dataset steward in the UniDPP framework (multi-body stewardship)<br>
+2026-09-07 · Accompanies ISO Form 4 (NWIP-1, Part 1 Vocabulary) · deployed at glossarist.org/dpp
+</div>
+</div>
+</header>
+<main class="wrap">
+<section id="announce">
+<h2><span class="no">01 · Announcement</span>What the dataset is</h2>
+<p>The UniDPP terminology dataset is a <strong>working dataset</strong> of Digital
+Product Passport concepts, stewarded under CalConnect-originated multi-body
+stewardship and published as a Glossarist Concept Browser edition. It is seeded from
+the converted corpus described in paper 1 of this series — the eight ENs of the
+18216–18246 series, two CWAs, 77 IDTA specifications, AWI ISO 25534-1 and the JTC 5
+plenary document set — and follows the architecture of the glossarist cie-eilv
+dataset, the proven pattern for standards-body terminology publishing in this
+toolchain. The deploy target is <span class="mono">glossarist.org/dpp</span>.</p>
+<p>The verified harvest stands at <strong>141 harvested entries — 82 from the EN
+series, 30 from CWA 18291, and 29 from IDTA 01001</strong> — reconciled by the
+glossarist audit into <strong>146 verified concepts: 123 harvested concepts plus 23
+proposed framework terms</strong>, organized into eight sections fixed in the dataset
+register: digital product passport; identity
+and carriers; actors and issuance; lifecycle and events; trust and verification;
+semantics and profiles; measurement; and framework terms. Paper 4 of this series
+records the dataset among the built assets of the reference implementation
+("terminology dataset (multilingual) — Glossarist dataset [built]").</p>
+<p>The eighth section, <strong>framework terms</strong>, is where the dataset absorbs
+the framework's own vocabulary rather than the standards corpus: twenty-three proposed
+concepts — <strong>profile, characteristic profile, projection, lens, stamp,
+transformation event, derived passport, Tier-A payload, passive twin, active twin,
+custody transfer, dormant identifier</strong> — each defined from the framework
+documents and typed <span class="mono">proposed</span> rather than harvested. The
+framework's later vocabulary — <em>blind edge, escrowed disclosure, proof of binding,
+enumeration resistance, predicate-based recall, trigger predicate, installation,
+recoverability, harvested part, truth mode, as-of state</em> — enters the same section
+through the same registered workflow as the concepts stabilize.</p>
+<p>The dataset exists because the terminology workstream is the first of the
+consortium's workstreams to reach a deliverable-ready state: the ISO–CEN definitional
+conflict over the passport concept itself is on the table, the vocabulary Part 1 of
+25534-1 is an approved work item in search of a drafting basis, and no
+machine-readable, citation-complete term base exists across the EN series, the CWAs
+and the IDTA specifications. This dataset is that basis, and this paper is its formal
+announcement to JTC 5.</p>
+</section>
+<section id="method">
+<h2><span class="no">02 · Method</span>Verbatim harvest with clause citations</h2>
+<p>Three rules governed the harvest, and all three are enforced by the data model
+rather than by editorial discipline:</p>
+<ul>
+<li><strong>Definitions are verbatim.</strong> A definition is copied exactly as the
+cited source states it, never rewritten, never reconciled. If two sources disagree,
+both texts survive, each with its citation.</li>
+<li><strong>Every source carries its clause.</strong> A term's provenance is recorded
+as reference plus clause — <span class="mono">EN 18223:2026, 3.4</span>, not "the EN
+series" — so any entry can be checked against its authority in one lookup.</li>
+<li><strong>Relationships between sources are typed.</strong> Each source entry
+carries a type: <span class="mono">authoritative</span> (the definition's home),
+<span class="mono">authoritatives-equivalent</span> (a second authority stating the
+same intension), <span class="mono">conflicting</span> (a divergence recorded for
+harmonization, with a modification note), or <span class="mono">lineage</span> (a
+source in the term's history, without a clause).</li>
+</ul>
+<p>Where a term inherits from the general standards vocabulary, the dataset cites the
+upstream standard rather than paraphrasing it: ISO/IEC 19762, ISO/IEC 6523,
+ISO/IEC 15459, ISO/IEC 17000 and ISO 5157 are the standing sources. Schema-level
+drift is captured the same way — the casing divergence between
+<span class="mono">lastUpdate</span> and <span class="mono">lastUpdated</span> across
+the EN series is recorded as data, because a term base that cannot state drift cannot
+support the harmonization annex the workstream owes Part 1.</p>
+</section>
+<section id="record">
+<h2><span class="no">03 · The concept record</span>Anatomy of one entry</h2>
+<p>Each concept is one YAML file in the dataset's concept collection; the register
+points at the collection and fixes the section taxonomy. The entry for the passport
+concept itself reads, in full structure:</p>
+<ul>
+<li><span class="mono">termid: dpp-0001</span> — a stable dataset identifier, never
+reused;</li>
+<li><span class="mono">terms:</span> the designations — the preferred expression
+"digital product passport" and the preferred abbreviation "DPP", each with normative
+status;</li>
+<li><span class="mono">definition:</span> <em>"digital record of product
+characteristics throughout its life cycle"</em> — verbatim, from
+<span class="mono">EN 18223:2026, clause 3.4</span>, typed
+<span class="mono">authoritative</span>;</li>
+<li><span class="mono">notes:</span> the source's own note ("example characteristics
+include environmental sustainability, environmental impact, and recyclability"),
+carried verbatim with the definition it qualifies;</li>
+<li><span class="mono">sources:</span> the full provenance list — see below;</li>
+<li><span class="mono">language_code: eng</span> — the dataset is English-seeded and
+multilingual by construction.</li>
+</ul>
+<p>The provenance list is where the method pays off. For
+<span class="mono">dpp-0001</span> it holds three entries:
+<span class="mono">EN 18223:2026, 3.4</span> (authoritative);
+<span class="mono">EN 18239 (prEN 18239:2025), 3.9</span>
+(authoritatives-equivalent — a second European authority with the same intension); and
+<span class="mono">ISO/AWI 25534-1 (2026-09-05 draft), 3.1</span>
+(<strong>conflicting</strong> — see section 04). The pattern repeats across the
+collection: <span class="mono">dpp-0002</span> ("controlled DPP data", section: trust
+and verification) carries two authoritative sources in agreement (EN 18239 clause 3.1
+and EN 18216:2026 clause 3.8); <span class="mono">dpp-0003</span> ("unique product
+identifier", section: identity and carriers) carries EN 18246 (prEN 18246:2025)
+clause 3.3 as authoritative with EN 18219:2026 recorded as lineage.</p>
+</section>
+<section id="conflict">
+<h2><span class="no">04 · The conflict annotation</span>Recorded, not resolved</h2>
+<p>The single most consequential entry in the dataset is a source type. The ISO
+working draft of 25534-1 defines the digital product passport as <em>"a concept or
+technology which enables sharing of product related information"</em> — a definition
+in a different genus from the EN series' "digital record of product characteristics
+throughout its life cycle". The dataset records this as the third source of
+<span class="mono">dpp-0001</span>, typed <span class="mono">conflicting</span>, with
+a modification note quoting the ISO text and stating that the conflict is recorded
+for harmonization under the proposed Part 1 (Vocabulary).</p>
+<p>The design decision worth JTC 5's attention is what the dataset does <em>not</em>
+do: it does not pre-harmonize. A term base that merged the two definitions would hide
+the very work the vocabulary part exists to do, and would do so invisibly — no audit
+trail, no way to know which text won. Recording the conflict as typed data makes
+harmonization a <strong>tracked editorial process</strong>: every resolution in the
+Part 1 draft can be traced to the recorded conflict it resolves, and the EN, UNTP and
+ISO 59040 correspondences in the harmonization annex are drawn against recorded
+sources rather than paraphrases.</p>
+<p>This is the dataset's answer to the ISO–CEN definitional conflict that anchors
+workstream 1: <strong>the conflict is data, harmonization is process, and the dataset
+holds both ends</strong>.</p>
+</section>
+<section id="deployment">
+<h2><span class="no">05 · Deployment</span>Glossarist as the publishing instrument</h2>
+<p>The dataset deploys on the glossarist toolchain, in the architecture proven by the
+cie-eilv dataset: a <span class="mono">register.yaml</span> fixing the dataset
+identity (name <span class="mono">dpp</span>, title "Digital Product Passport —
+Terminology", organization "UniDPP (CalConnect-originated, multi-body stewardship)",
+status "working dataset") and the eight sections; one YAML file per concept in the
+concept collection; and <span class="mono">lib/</span> plus
+<span class="mono">scripts/</span> providing the build per the cie-eilv pattern, with
+the site configured for <span class="mono">glossarist.org/dpp</span>.</p>
+<p>Two properties of the deployment matter more than the site itself. First, the
+Concept Browser edition makes every entry publicly browsable with its citations and
+conflict annotations — the dataset is inspectable by anyone it proposes to constrain.
+Second, and load-bearing for the workstream: <strong>the Metanorma document for the
+Part 1 draft is generated from the dataset</strong>, not written beside it. The
+dataset is the single source of truth; the standards document is derived output.
+Revisions to a definition, a source typing or a conflict resolution are made once, in
+the concept YAML, and flow to the draft, the browsable site and any future language
+editions together — the same source-over-derived discipline paper 4 applies to
+passport renders.</p>
+</section>
+<section id="part1">
+<h2><span class="no">06 · The Part 1 role</span>Drafting basis for AWI ISO 25534-1</h2>
+<p>AWI ISO 25534-1 splits into a vocabulary Part 1 and a Part 2 addressing the
+passport itself (paper 1). This dataset is offered as the <strong>drafting basis for
+Part 1</strong> — the contribution the terminology workstream owes the new work item:
+a concept base of roughly <strong>80 to 120 entries distilled from the 146 verified
+concepts</strong>, with the register's eight sections available as the clause
+skeleton of the vocabulary, and a <strong>harmonization annex</strong> mapping the
+correspondences EN ↔ UNTP ↔ ISO 59040 ↔ 25534-1 drawn from recorded sources rather
+than from paraphrase.</p>
+<p>Distillation is not deletion. Entries that do not carry into Part 1 remain in the
+dataset as register content — the browsable collection stays the superset, the
+standard stays a view — which is the same source-over-derived discipline paper 4
+applies to passport renders and paper 2 applies to the semantic registry. A term
+dropped from a committee draft for scope reasons remains citable, with its
+provenance, for the delegated acts and sector profiles that will need it next.</p>
+<p>The accompanying new-work-item proposal (ISO Form 4) is attached to this
+contribution under <strong>CalConnect attribution</strong>, with ISO/TC 154 and the
+full consortium as supporting bodies — the same sponsorship pattern as the semantic
+registry NWIP of paper 2.</p>
+</section>
+<section id="availability">
+<h2><span class="no">07 · Availability</span>What is open today, what comes next</h2>
+<p>The dataset is open now: register and concept collection under the UniDPP
+repositories' Apache-2.0/MIT terms, multi-body stewardship, browsable as a Glossarist
+Concept Browser edition at <span class="mono">glossarist.org/dpp</span>, with the
+register naming the organization as "UniDPP (CalConnect-originated, multi-body
+stewardship)" and the status honestly marked "working dataset".</p>
+<p>Four next steps are committed, in order: wiring the Metanorma generation of the
+Part 1 draft into the dataset build so the standard document is always derived;
+extending the concept collection beyond <span class="mono">eng</span> into the
+languages the deployed services already serve; drift monitoring, so that new prEN
+revisions and incoming delegated acts land as diffs against recorded sources rather
+than as silent redefinitions; and, jointly with paper 2's registry requirements,
+assigning register-grade identifiers to terms under the same ISO 19135 registration
+discipline proposed for data elements.</p>
+<p>The consortium's position, in one sentence: <strong>a vocabulary standard for the
+DPP should be generated from a citable, conflict-annotated term base — and this is
+that term base, offered as the drafting basis for Part 1 with the work item form
+attached.</strong></p>
+</section>
+<section id="refs" class="refs">
+<h2><span class="no">08 · References</span></h2>
+<ol>
+<li>EN 18216–18246 series (CEN-CLC/JTC 24), including EN 18223:2026 and prEN 18239:2025.</li>
+<li>CWA 18291; IDTA 01001.</li>
+<li>ISO/AWI 25534-1 (2026-09-05 working draft).</li>
+<li>ISO/IEC 19762; ISO/IEC 6523; ISO/IEC 15459; ISO/IEC 17000; ISO 5157.</li>
+<li>ISO 59040; UN Transparency Framework (UNTP, UNECE).</li>
+<li>Glossarist (glossarist.org) and the cie-eilv dataset architecture.</li>
+<li>Companion papers 1, 2, 3, 4 and 5 of this series.</li>
+</ol>
+</section>
+</main>
+<footer>
+<div class="wrap" style="padding:0 2rem;">
+<p style="margin-bottom:0.5rem;">UniDPP project, convened under CalConnect — multi-body stewardship; Apache-2.0/MIT per repository.</p>
+<p style="margin-bottom:0;">Paper 6 of 6 · dpp-terminology-dataset.html · 2026-09-07</p>
+</div>
+</footer>
+</body>
+</html>

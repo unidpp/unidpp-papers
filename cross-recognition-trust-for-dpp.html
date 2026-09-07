@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-recognition trust for the Digital Product Passport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+--paper: #faf7f0; --paper-soft: #ffffff; --paper-raised: #f3ede1;
+--ink: #101a2b; --ink-soft: #3a4a63; --ink-muted: #6b7a92;
+--rule: #dcd2bd; --rule-soft: #ebe4d4;
+--accent: #0f4c81; --accent-soft: rgba(15, 76, 129, 0.08);
+--amber: #b45309; --navy: #0a1628; --sky: #8fb8e8; --grid: rgba(10, 22, 40, 0.045);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+background: var(--paper);
+background-image:
+linear-gradient(var(--grid) 1px, transparent 1px),
+linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+background-size: 32px 32px;
+color: var(--ink); line-height: 1.65; -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 2rem; }
+header.hero {
+background: linear-gradient(160deg, #060e1c 0%, #0a1628 55%, #14233d 100%);
+color: #f5efe4; padding: 4.5rem 0 3.5rem; border-bottom: 3px solid var(--accent);
+}
+.hero .eyebrow {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em;
+text-transform: uppercase; color: var(--sky); margin-bottom: 1.25rem;
+}
+.hero h1 {
+font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 500; line-height: 1.12;
+letter-spacing: -0.015em; margin-bottom: 1.25rem;
+}
+.hero .lede { font-size: 1.12rem; color: #c2cad8; max-width: 44rem; font-weight: 300; }
+.hero .lede strong { color: #f5efe4; font-weight: 500; }
+.hero .meta {
+margin-top: 2rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+color: #8d9bb4; letter-spacing: 0.04em;
+}
+main { padding: 3.5rem 0 4rem; }
+section { margin-bottom: 4rem; }
+h2 {
+font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+letter-spacing: -0.01em; margin-bottom: 1.4rem; color: var(--ink); padding-top: 1rem;
+}
+h2 .no {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent);
+letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.5rem;
+font-weight: 500;
+}
+h3 {
+font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600;
+margin: 2rem 0 0.75rem; color: var(--ink);
+}
+p { margin-bottom: 1.1rem; color: var(--ink-soft); }
+p strong, li strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 1.2rem 1.4rem; color: var(--ink-soft); }
+li { margin-bottom: 0.55rem; }
+.callout {
+background: var(--paper-soft); border: 1px solid var(--rule);
+border-left: 3px solid var(--accent); border-radius: 6px;
+padding: 1.25rem 1.5rem; margin: 1.6rem 0;
+}
+.callout.amber { border-left-color: var(--amber); background: #fffdf6; }
+.callout p:last-child { margin-bottom: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th {
+text-align: left; font-weight: 600; color: var(--ink);
+border-bottom: 2px solid var(--rule); padding: 0.5rem 0.75rem 0.5rem 0;
+}
+td { border-bottom: 1px solid var(--rule-soft); padding: 0.6rem 0.75rem 0.6rem 0; color: var(--ink-soft); vertical-align: top; }
+td:first-child { font-weight: 600; color: var(--ink); }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; }
+.refs ol { margin-left: 1.4rem; font-size: 0.88rem; color: var(--ink-soft); }
+.refs li { margin-bottom: 0.4rem; }
+footer { border-top: 1px solid var(--rule); padding: 2.5rem 0 3rem; color: var(--ink-muted); font-size: 0.85rem; }
+@media print {
+@page { size: A4; margin: 20mm 24mm 22mm 24mm; }
+body { background: #fff; background-image: none; }
+h2, h3 { page-break-after: avoid; }
+figure, .callout { page-break-inside: avoid; }
+tr { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="eyebrow">ISO/IEC JTC 5 · Digital Product Passport · Trust annex input · Paper 5 of 6</div>
+<h1>Cross-recognition trust for the Digital Product Passport</h1>
+<p class="lede">SIGNATIF as the workstream D trust input: jurisdictional trust lists, a
+multi-witnessed master list under an M-of-K log quorum, profile-bound cryptographic
+suites including SM, FIPS and post-quantum families, revocation whose reason determines
+retroactivity — and CNML as the first demonstrated sector realization —
+<strong>verifying any jurisdiction's passport view under your own anchors, without
+adopting foreign rules</strong>.</p>
+<div class="meta">
+CalConnect · ISO/TC 154 — with OIML (co-signatory) — in the UniDPP framework<br>
+2026-09-07 · Proposed input to JTC 5 workstream D (trust)
+</div>
+</div>
+</header>
+<main class="wrap">
+
+<section id="scope">
+<h2><span class="no">01 · Scope</span>The trust vacancy and the proposal</h2>
+<p>The EN series assumes a trust layer it does not define: eIDAS is named as the frame,
+roles carry authorization in EN 18239 and EN 18222 without a trust infrastructure to
+underwrite them, and nothing in the series tells a Japanese or Chinese verifier how to
+check a European signature — or vice versa — without adopting the other side's rules.
+AWI 25534-1 sketches the right answer in one sentence (a global trust anchor registry
+accrediting regional and national frameworks) and leaves it unimplemented.</p>
+<p>This contribution proposes that JTC 5 take <strong>SIGNATIF</strong> — a published,
+open cross-recognition architecture (signatif.org) — as the basis of workstream D's
+trust annex, and offers its DPP annex as the starting text. SIGNATIF is not a new PKI;
+it is the composition of four proven lineages under one verification discipline: the
+WebPKI with Certificate Transparency (transparency logs), the ePassport CSCA/PKD system
+(governmental master lists), code-signing practice (key protection and timestamping),
+and eIDAS (accreditation of trust service providers) — unified by threshold-quorum
+roots, four-layer scope enforcement, and an algorithm-agility registry.</p>
+<p>The requirement it answers is invariant I9 of paper 1 (graded trust) in its
+sovereignty form: <strong>cross-verification without adopting foreign rules</strong>
+— a verifier in one jurisdiction checks another jurisdiction's passport projection
+against anchors in the verifier's own bundle, with scope checked at every link of the
+chain.</p>
+</section>
+
+<section id="architecture">
+<h2><span class="no">02 · Architecture</span>Trust lists, master list, M-of-K</h2>
+<p>The trust topology has three tiers:</p>
+<ul>
+<li><strong>Jurisdictional trust authorities</strong> — threshold groups, not single
+keys: a jurisdiction's root is held by a quorum (Confium-class threshold operations),
+so no single key compromise and no single national decision can forge or withdraw
+trust. Each authority publishes a <strong>trust list</strong> of the issuers,
+accreditations and algorithm bindings it recognizes.</li>
+<li><strong>The master list</strong> — a globally multi-witnessed aggregation of
+jurisdictional trust lists, anchored in an <strong>M-of-K quorum of independent
+transparency logs</strong>: a master-list entry is trustworthy when at least M of K
+independent log operators have witnessed it. This answers, mechanically, the question
+every "single global registry" proposal fails on — <em>who runs it</em> — with
+"nobody alone". Onboarding ceremonies for new jurisdictions and dispute resolution
+(runner-up to the threshold roots) are specified operations, not diplomacy.</li>
+<li><strong>Profile-scoped acceptance policies</strong> — each profile declares which
+authorities, suites and log quorums its verifiers accept, and in which precedence.
+Trust is thus jurisdiction-scoped by construction; the master list makes foreign
+anchors <em>discoverable</em>, never mandatory.</li>
+</ul>
+<p>Transparency logs anchor both trust events and passport events, which yields the
+availability property paper 1 requires: verification decouples from origin servers — a
+verifier holding an inclusion proof never needs the issuer's service to be up, and
+distrust declarations become discoverable for every anchored artifact. The logs anchor
+<strong>commitments, not facts</strong>: what a log witnesses is a hash, so a log
+operator can prove inclusion but cannot correlate graph edges — the
+enumeration-resistance property of invariant I12 (paper 1). The join this section
+specifies — issuer credentials to profile trust lists, the delegation DAG to roots to
+the master list — is seam S7 of the twelve enumerated in paper 1.</p>
+</section>
+
+<section id="suites">
+<h2><span class="no">03 · Cryptographic suites</span>Multi-suite signatures as the norm</h2>
+<p>Cryptographic suites are <strong>part of the profile, not the platform</strong>. The
+same payload carries multiple signatures side by side (the SIGNATIF co-signature
+model); each verifier checks what its own acceptance policy requires:</p>
+<table>
+<tr><th style="width:24%">Jurisdiction binding</th><th>Suite family</th><th style="width:30%">Standardization anchor</th></tr>
+<tr><td>China profile</td><td>SM2 / SM3 / SM4 / SM9, with TLCP transport termination by the regional service provider.</td><td>Published as ISO/IEC mechanisms: 14888-3, 10118-3, 18033-3</td></tr>
+<tr><td>US federal profile</td><td>FIPS 186 / FIPS 197, SHA-2 and SHA-3, in FIPS 140-3 validated modules.</td><td>NIST FIPS series</td></tr>
+<tr><td>EU profile</td><td>eIDAS-acceptable suites.</td><td>eIDAS / ETSI</td></tr>
+<tr><td>All profiles (migration)</td><td>Composite and post-quantum signatures (e.g., ML-DSA) alongside classical, per migration phase.</td><td>Algorithm-agility registry (SIGNATIF)</td></tr>
+</table>
+<p>An EU-verifiable ECDSA signature, a China-verifiable SM2 signature and a
+post-quantum ML-DSA signature over the same commitment coexist on one passport; none
+is privileged by the platform. Envelope encryption wraps payload keys per recipient
+under each jurisdiction's permitted key-encapsulation mechanisms, and transport-level
+overrides live in the profile (a profile whose jurisdiction cannot terminate the TLS
+profile of EN 18216 terminates its own transport at its regional service provider —
+L6 of paper 1). The agility registry governs suite lifecycles, so post-quantum
+migration is a scheduled registry transition, not a flag day.</p>
+</section>
+<section id="revocation">
+<h2><span class="no">04 · Revocation</span>The reason determines the retroactivity</h2>
+<p>Revocation is not one operation: <strong>the reason determines the
+retroactivity</strong>. This is the single semantic distinction the trust annex must
+legislate, because every other property follows from it.</p>
+<ul>
+<li><strong>Prospective reasons</strong> — key compromise <em>after</em> a time T,
+cessation of operations, supersession by a successor key, affiliation change. As-of-T
+verifications dated before the event remain valid; trusted timestamping protects them,
+exactly as timestamping protects signed code whose key later rotates.</li>
+<li><strong>Retroactive reasons</strong> — misissuance, fraudulent issuance, an
+authority compromised <em>during a window</em>. Validity is void <strong>ab
+initio</strong> (or from the window start); timestamping does <em>not</em> protect,
+exactly as a browser root store distrusting a misissuing CA invalidates that CA's
+timestamped certificates retroactively.</li>
+</ul>
+<p>Distrust declarations therefore carry an explicit <span class="mono">window
+[start, end]</span>: artifacts anchored inside the window are voided, artifacts outside
+it are re-validated, and transparency logs make every anchored artifact's exposure
+discoverable, so no verifier has to trust the declaring authority's completeness.</p>
+<h3>The void-ab-initio case, worked</h3>
+<p>A notified actor fraudulently issues passports for goods that were never
+manufactured. A superior, quorate body — threshold vote under master-list governance,
+the SIGNATIF dispute-resolution operation — declares the authority fraudulent, with a
+window covering the misconduct. The cascade that follows is mechanical, not
+discretionary: every passport that authority issued inside the window is void from
+inception, <em>including those verified months earlier in good faith with valid
+timestamps</em>. What protects the good-faith verifiers is not the passports but the
+<strong>evidentiary reading</strong> of their as-of stamps (section 05); what protects
+the market is that the fraudulent goods cannot be laundered through time. Distrust
+cascades follow the window, never exceed it.</p>
+<p>Revocation, withdrawal and suspension remain three distinct tracks, as fixed in
+paper 1's operating model: <strong>cryptographic revocation</strong> (compromise:
+SIGNATIF revocation propagation to transitively bound artifacts, plus emergency
+revocation), <strong>legal withdrawal</strong> (accreditation removed: trust-list and
+profile-binding updates, with grace windows for in-flight verification), and
+<strong>diplomatic breakdown</strong> (cross-recognition suspended: verification still
+succeeds under other anchors; affected profiles' acceptance policies quarantine the
+suspended authority's artifacts rather than the whole system).</p>
+</section>
+<section id="readings">
+<h2><span class="no">05 · Verification</span>Three readings, one verdict format</h2>
+<p>Because law needs all three, a verdict is not one bit. The trust annex defines
+three readings and requires every verdict to state which it answers:</p>
+<ul>
+<li><strong>Evidentiary</strong> — what could a diligent verifier have known at T,
+given the then-current trust state? This reading protects good-faith actors: their
+as-of stamps are the proof of diligence, and they survive later retroactive distrust
+of what they verified.</li>
+<li><strong>Current-state</strong> — is the artifact valid given everything known
+now? Fraud voids ab initio under this reading, which is what prevents fraudulent goods
+from being laundered through time and re-entry into circulation.</li>
+<li><strong>Cryptographic</strong> — do the signature and the chain verify, full
+stop? Necessary for the other two, sufficient for none of them.</li>
+</ul>
+<p>The verdict itself is a <strong>coverage report, not a boolean</strong>: which
+anchors were reachable, which suites checked, which log quorums witnessed, which
+window rules applied — the same report shape paper 1 fixes for offline verification
+and paper 4's conformance tooling consumes. A verifier in one jurisdiction reading
+another jurisdiction's projection states its reading and its anchor bundle, and the
+outcome is reproducible by any third party holding the same bundle.</p>
+</section>
+<section id="taint">
+<h2><span class="no">06 · Graph taint</span>Fraud propagates as a graph event</h2>
+<p>Marking a passport fraudulent is a <strong>graph event, not just a trust-list
+event</strong>. The trust list says something about an authority; the taint says
+something about goods. It traverses the provenance DAG downstream — the same machinery
+a recall uses, with a different cause — and it does four things on the way:</p>
+<ul>
+<li><strong>It taints derived passports</strong> — every passport whose fact-chain
+depends on the fraudulent issuance inherits the mark, without re-verification of each
+one from scratch.</li>
+<li><strong>It recomputes affected claims</strong> — a recycled-content claim built on
+stolen material collapses when the input passports are tainted, because the claim was
+always a computed function of its inputs, never an independent assertion.</li>
+<li><strong>It notifies custodians</strong> — the holders of tainted objects learn of
+the taint through the same event stream that carries every other lifecycle event of
+paper 3, and may face suspension of the affected products.</li>
+<li><strong>It enters the accounts</strong> — mass-balance accounting must carry
+taint explicitly: a tonne of tainted input is not a tonne of clean input, and the books
+must be able to say so.</li>
+</ul>
+<p>Issuer misconduct escalates beyond taint into a <strong>status-invalidation
+cascade with adjudication</strong>: statuses are invalidated by due process, the
+adjudicated outcomes are themselves logged events, and the record of the adjudication
+is anchorable like any other. The system never confuses "fraudulent" with "merely
+revoked"; the first is a property of the graph, the second a property of the keys.</p>
+</section>
+<section id="cnml">
+<h2><span class="no">07 · Sector realization</span>CNML under the ESDC open class, with OIML</h2>
+<p>EN 18246 defines its sector-specific data carrier class (ESDC) as an <strong>open
+class</strong> — Annex A is explicitly "non-exhaustive" — and the framework treats that
+openness as an obligation to demonstrate. The first demonstration is <strong>CNML, a
+post-quantum national metrology PKI, registered as ESDC realization number 4</strong>
+in the UniDPP portfolio: the fourth enumerated realization of the open class, and the
+first exercised end-to-end under the trust architecture of this paper.</p>
+<p>What CNML demonstrates, concretely: post-quantum credentials operating as
+profile-bound suites rather than platform-wide flags; notified-actor credentials per
+EN 18239 carried in the same trust-list structure as ordinary issuer credentials; and
+a <strong>metrological-validity clause for measured data points</strong> — a measured
+claim is only as valid as the instrument that produced it, so the profile binds the
+measurement chain the way other profiles bind the cryptographic chain. The pattern is
+the replicable vertical template of paper 1: one regulated sector, one profile, one
+trust binding — repeatable for ErP, battery and metering delegated acts, and adjacent
+to IDTA 02065/02029 practice without being subordinate to it.</p>
+<p>Because trust objects are profile-shaped, the same discipline reaches the registry
+itself: profile registrations, their version supersessions and their trust bindings
+(which issuers may attest under them) are <strong>signed, registry-deposited,
+log-anchored objects</strong>, and the registry is <strong>multi-suite co-signed</strong>
+so that every jurisdiction verifies profile authenticity under its own crypto policy.
+Verification path-finds from any render, through the profile and its fact-chain, to an
+anchor in <em>the verifier's</em> bundle, with scope checked at every link; roots are
+threshold and federated groups — no single key, no single country.</p>
+<p><strong>OIML is co-signatory of this paper.</strong> The metrology community
+supplies both the first vertical and the governance vocabulary: profile registration
+is pattern approval, published calibration is the versioned rule set, uncertainty and
+decision rules follow GUM/ILAC-G8 practice, and periodic re-verification is a
+conformance run — the same correspondence paper 1 draws between profiles and legal
+measuring instruments.</p>
+</section>
+<section id="ask">
+<h2><span class="no">08 · The ask</span>What workstream D should take from this</h2>
+<ul>
+<li style="margin-bottom: 0.7rem;"><strong>Adopt SIGNATIF's DPP annex as the starting
+text</strong> of the workstream D trust annex, with signatif.org as the citable
+source and the annex's registry-to-multi-log quorum as the reference topology.</li>
+<li style="margin-bottom: 0.7rem;"><strong>Standardize four things, no more</strong>:
+the trust-list and master-list formats with M-of-K witnessing; the revocation-reason
+taxonomy and its retroactivity rules (section 04); the three-reading verdict format
+with coverage reports (section 05); and taint as a typed graph event in the lifecycle
+model of paper 3.</li>
+<li style="margin-bottom: 0.7rem;"><strong>Keep the trust registry a sibling, not a
+monolith</strong>: the trust registry (SIGNATIF-shaped, this paper) and the semantic
+registry (FERIN, paper 2) operate under the same ISO 19135 registration discipline,
+with no dependency of one on the other's internals.</li>
+<li style="margin-bottom: 0.7rem;"><strong>Test, don't assert</strong>: the
+conformance layer is SIGNATIF ATS plus the ISO 8601 temporal test suite, expressir
+model validation and carrier tests, executed as part of paper 4's open conformance
+matrix.</li>
+</ul>
+</section>
+<section id="refs" class="refs">
+<h2><span class="no">09 · References</span></h2>
+<ol>
+<li>SIGNATIF (signatif.org), including its Digital Product Passport annex; Confium threshold operations.</li>
+<li>Lineage systems: WebPKI with Certificate Transparency (RFC 6962); ICAO Doc 9303 CSCA/PKD; CA/Browser Forum code-signing and timestamping practice; eIDAS (Regulation (EU) 910/2014) accreditation of trust service providers.</li>
+<li>Suite anchors: ISO/IEC 14888-3, ISO/IEC 10118-3, ISO/IEC 18033-3 (SM mechanisms); NIST FIPS 186-5, FIPS 197, FIPS 140-3; FIPS 204 (ML-DSA).</li>
+<li>EN 18239 (notified actors); EN 18246 (ESDC open class, Annex A); EN 18221 (persistence).</li>
+<li>ISO 19135 (registration discipline); GUM and ILAC-G8 (measurement uncertainty and decision rules).</li>
+<li>Companion papers 1, 2, 3 and 4 of this series.</li>
+</ol>
+</section>
+</main>
+<footer>
+<div class="wrap" style="padding:0 2rem;">
+<p style="margin-bottom:0.5rem;">UniDPP project, convened under CalConnect — multi-body stewardship; Apache-2.0/MIT per repository.</p>
+<p style="margin-bottom:0;">Paper 5 of 6 · cross-recognition-trust-for-dpp.html · 2026-09-07</p>
+</div>
+</footer>
+</body>
+</html>

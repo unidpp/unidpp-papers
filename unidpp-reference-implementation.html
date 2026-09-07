@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UniDPP: a reference implementation of the international framework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+--paper: #faf7f0; --paper-soft: #ffffff; --paper-raised: #f3ede1;
+--ink: #101a2b; --ink-soft: #3a4a63; --ink-muted: #6b7a92;
+--rule: #dcd2bd; --rule-soft: #ebe4d4;
+--accent: #0f4c81; --accent-soft: rgba(15, 76, 129, 0.08);
+--amber: #b45309; --navy: #0a1628; --sky: #8fb8e8; --grid: rgba(10, 22, 40, 0.045);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+background: var(--paper);
+background-image:
+linear-gradient(var(--grid) 1px, transparent 1px),
+linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+background-size: 32px 32px;
+color: var(--ink); line-height: 1.65; -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 2rem; }
+header.hero {
+background: linear-gradient(160deg, #060e1c 0%, #0a1628 55%, #14233d 100%);
+color: #f5efe4; padding: 4.5rem 0 3.5rem; border-bottom: 3px solid var(--accent);
+}
+.hero .eyebrow {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em;
+text-transform: uppercase; color: var(--sky); margin-bottom: 1.25rem;
+}
+.hero h1 {
+font-family: 'Fraunces', serif; font-size: 2.6rem; font-weight: 500; line-height: 1.12;
+letter-spacing: -0.015em; margin-bottom: 1.25rem;
+}
+.hero .lede { font-size: 1.12rem; color: #c2cad8; max-width: 44rem; font-weight: 300; }
+.hero .lede strong { color: #f5efe4; font-weight: 500; }
+.hero .meta {
+margin-top: 2rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+color: #8d9bb4; letter-spacing: 0.04em;
+}
+main { padding: 3.5rem 0 4rem; }
+section { margin-bottom: 4rem; }
+h2 {
+font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+letter-spacing: -0.01em; margin-bottom: 1.4rem; color: var(--ink); padding-top: 1rem;
+}
+h2 .no {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent);
+letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.5rem;
+font-weight: 500;
+}
+h3 {
+font-family: 'Fraunces', serif; font-size: 1.2rem; font-weight: 600;
+margin: 2rem 0 0.75rem; color: var(--ink);
+}
+p { margin-bottom: 1.1rem; color: var(--ink-soft); }
+p strong, li strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 1.2rem 1.4rem; color: var(--ink-soft); }
+li { margin-bottom: 0.55rem; }
+.callout {
+background: var(--paper-soft); border: 1px solid var(--rule);
+border-left: 3px solid var(--accent); border-radius: 6px;
+padding: 1.25rem 1.5rem; margin: 1.6rem 0;
+}
+.callout.amber { border-left-color: var(--amber); background: #fffdf6; }
+.callout p:last-child { margin-bottom: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th {
+text-align: left; font-weight: 600; color: var(--ink);
+border-bottom: 2px solid var(--rule); padding: 0.5rem 0.75rem 0.5rem 0;
+}
+td { border-bottom: 1px solid var(--rule-soft); padding: 0.6rem 0.75rem 0.6rem 0; color: var(--ink-soft); vertical-align: top; }
+td:first-child { font-weight: 600; color: var(--ink); }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; }
+.refs ol { margin-left: 1.4rem; font-size: 0.88rem; color: var(--ink-soft); }
+.refs li { margin-bottom: 0.4rem; }
+footer { border-top: 1px solid var(--rule); padding: 2.5rem 0 3rem; color: var(--ink-muted); font-size: 0.85rem; }
+@media print {
+@page { size: A4; margin: 20mm 24mm 22mm 24mm; }
+body { background: #fff; background-image: none; }
+h2, h3 { page-break-after: avoid; }
+figure, .callout { page-break-inside: avoid; }
+tr { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="eyebrow">ISO/IEC JTC 5 · Digital Product Passport · Implementation report · Paper 4 of 6</div>
+<h1>UniDPP: a reference implementation of the international framework</h1>
+<p class="lede">An implementation report on UniDPP, the open reference implementation
+of the international DPP framework: repository architecture, the EU profile as one
+profile among many, a corpus-derived conformance methodology with executed results,
+byte-exact demonstration scenarios, and planned benchmarks against the existing open
+implementations —
+<strong>reported as engineering status, with completed and planned work clearly
+separated</strong>.</p>
+<div class="meta">
+UniDPP project · CalConnect — multi-body stewardship<br>
+2026-09-07 · Implementation experience input to ISO/IEC JTC 5
+</div>
+</div>
+</header>
+<main class="wrap">
+
+<section id="scope">
+<h2><span class="no">01 · Scope and status</span>Why an implementation report</h2>
+<p>None of the eight ENs of the DPP series contains a conformance clause: the published
+European standards specify less about what an implementation must do to claim
+conformity than the consortium specifications beside them (IDTA 01002, for example,
+ships a machine-validated JSON Schema and a conformance corpus for its API). ISO
+values implementation experience precisely because it exposes the difference between
+what a text says and what a system can do. This paper reports the UniDPP project: an
+Apache-2.0/MIT multi-repository implementation of the framework described in paper 1,
+built to run the EN series as one jurisdiction profile among several.</p>
+<p>Honest status marking is used throughout: <strong>[built]</strong> components exist
+and run; <strong>[in progress]</strong> components are under construction with a
+committed design; <strong>[planned]</strong> components have a specification and a
+roadmap slot. Nothing on this page claims production readiness.</p>
+</section>
+
+<section id="architecture">
+<h2><span class="no">02 · Architecture</span>The repository map</h2>
+<p>The implementation follows the framework's layering (paper 1, §04): a neutral core
+in Rust, generated bindings for the web, registry and terminology integrations in Ruby,
+verification harnesses in Python, and the trust layer contributed by the SIGNATIF
+stack.</p>
+<table>
+<tr><th style="width:20%">Repository</th><th>Contents</th><th style="width:11%">Status</th><th style="width:9%">Tests</th></tr>
+<tr><td>unidpp-core (Rust)</td><td>Scheme-agnostic identity with ISO/IEC 15459 parsing and bridging; core passport model with manifests and typed PassportLink edges; typed events over an append-only log with commitment hashing; split/combine transforms with mass balance and taint propagation; the Tier-A offline packer (minimum fields, multi-suite signature framing, carrier-size budgeting); graded trust verdicts with coverage reports and freshness; resolver linkset emission/parsing with context routing; the unidpp-demo CLI replaying three narrated scenarios (battery loop, car, laptop) with byte-exact traces. Property tests: quantity conservation, commitment consistency, casing-normalization conformance.</td><td>[built]</td><td>118</td></tr>
+<tr><td>unidpp-spec</td><td>JSON Schema for the core model and profiles; the single source for generated types; profile templates.</td><td>[in progress]</td><td>—</td></tr>
+<tr><td>unidpp-ts</td><td>Types generated from unidpp-spec; client libraries for resolver, registry and passport APIs; validators; browser-side Tier-A verification. Published as <span class="mono">@unidpp/*</span>.</td><td>[planned]</td><td>—</td></tr>
+<tr><td>unidpp-rb</td><td>Registry client (FERIN/19135 items, statuses, supersession); glossarist bridge (terminology ↔ registry anchors); expressir/CDDAL hooks for schema validation; CNML/ESDC handling via lutaml-model. Published as gem <span class="mono">unidpp</span>.</td><td>[built]</td><td>132</td></tr>
+<tr><td>unidpp-py</td><td>Verification-pipeline harness driving unidpp-core; conformance runners (positive corpus plus audit-derived negative cases — the EU-profile runner of §05 among them); adapters for UNTP, EPCIS and GS1 Digital Link. Published as <span class="mono">unidpp</span> on PyPI.</td><td>[built]</td><td>133</td></tr>
+<tr><td>unidpp-resolver</td><td>Linkset resolver with profile-context routing (RFC 9264 linksets), carrier→identifier normalization (GS1 Digital Link, GB/T 33993, legacy EAN-13, ISO/IEC 15459 URN), dark identities, as-of stamped resolution and national-intermediary mode.</td><td>[built]</td><td>44</td></tr>
+<tr><td>unidpp-signatif</td><td>Trust layer over the SIGNATIF model: real multi-suite signatures (Ed25519, ECDSA P-256), delegation trust graph with scope enforcement, revocation whose reason determines retroactivity, transparency anchoring, graded verification; threshold quorum operations through the Confium interface seam (binding deferred).</td><td>[built]</td><td>71</td></tr>
+<tr><td>unidpp-explorer</td><td>Developer tooling for inspecting passports, event logs and profiles; browser-side Tier-A verification with live WebCrypto.</td><td>[built]</td><td>browser</td></tr>
+<tr><td>unidpp.github.io</td><td>Documentation site (www.unidpp.org): framework pages, capability comparison, terminology browser embed.</td><td>[in progress]</td><td>—</td></tr>
+</table>
+<h3>The website and its progressive-disclosure information architecture</h3>
+<p>The documentation site is deliberately not a flat namespace of technical pages. It
+is arranged as one depth sequence — <strong>read by depth</strong>, where each level
+assumes the one before it: a plain-language account of what a passport is (told with a
+washing machine); the international case (one laptop, five jurisdictions, one record
+instead of five); the mechanism (the six layers, the fourteen invariants, capability
+classes, trust); and only then the full reference material (the framework in full, the
+standards map, the implementation, the comparisons, the terminology, the papers, and
+stewardship). A market-surveillance officer, a committee delegate and a software
+engineer each enter at their own depth without being forced through material they do
+not need. The <strong>terminology page deploys the Glossarist Concept Browser
+edition</strong> of the dataset announced in paper 6 (glossarist.org/dpp), so the
+vocabulary the framework proposes is inspectable from the same site that documents the
+implementation that exercises it.</p>
+</section>
+
+<section id="eu-profile">
+<h2><span class="no">03 · The EU profile</span>Conformance approach</h2>
+<p>The eight ENs are implemented together as a single jurisdiction profile — the "EU
+profile" — over the neutral core, exactly as the framework prescribes for any legal
+regime: EN 18223's data model maps to profile-declared data points, EN 18222's API to
+the profile's served interface, EN 18239's roles to the profile's access policies, EN
+18220's carriers and EN 18216's transport to the profile's carrier and transport
+bindings. The core remains jurisdiction-free; nothing EU-specific leaks below the
+profile line (invariant I11 checked mechanically: the core test suite forbids
+EU-profile imports).</p>
+<p>Conformance is corpus-driven. The positive corpus is assembled from every worked
+example in the EN texts and the IDTA mapping tables (notably IDTA 02099-1, the
+submodel-to-EN mapping template). The negative corpus is derived from the audit
+register of corpus defects: each defect class becomes a validator test that must reject
+the defective form. This is the <strong>conformance fixture plan</strong>: every item
+of the defect register (AUDIT) becomes a negative fixture with its citation attached,
+so the corpus's own defects define the rejection suite — the published texts are the
+richest available source of inputs a conforming implementation must refuse. Two consequences follow. First, casing and format drift become
+<em>normalization conformance</em> tests rather than editorial complaints: the
+implementation accepts <span class="mono">"granularity": "Model"</span> and
+<span class="mono">"model"</span> (the EN prints the lowercase enumeration in
+§4.1.2.2 and the capitalized form in its own §5.2.4 example), normalizes, and records
+which form was seen. Second, timestamp validation is strict ISO 8601-1 — the corpus
+contains a published example using en-dash separators, which the validator must reject
+and the report must log. The plan is no longer prospective: the run over the complete
+EN 18223 example corpus has been executed, and section 05 reports its results.</p>
+</section>
+
+<section id="drift">
+<h2><span class="no">04 · Drift findings</span>Methodology and a worked example</h2>
+<p>Drift findings are produced by a fixed method: (1) convert the source documents
+(the eight ENs, two CWAs, 77 IDTA specifications, AWI 25534-1) to a common
+machine-readable form; (2) extract identifier vocabulary, enumerations and examples;
+(3) cross-reference against the claims each document makes about the others; (4)
+classify divergences as inconsistency, underspecification or editorial; (5) encode
+each finding as a test. The method is reproducible from the published texts, and every
+finding carries a clause-level citation.</p>
+<div class="callout">
+<p><strong>Worked example — <span class="mono">lastUpdated</span> vs
+<span class="mono">lastUpdate</span>.</strong> EN 18223 names the passport update
+timestamp <span class="mono">lastUpdated</span>. IDTA 02099-1, the consortium
+specification whose purpose is to map its submodel content into the EN's data model,
+names the corresponding field <span class="mono">lastUpdate</span>. An implementer
+following both documents cannot tell which spelling the registry will index; a
+casing-normalization layer must be introduced on one side or the other, and neither
+document says whose job that is. In UniDPP the finding becomes a conformance fixture:
+both spellings are accepted at the EU-profile boundary, normalized to the core's
+canonical field, and the acceptance is recorded in the verification coverage report —
+the drift is visible in every verdict instead of silent. The same machinery covers the
+<em>Model/model</em> and <em>Active/active</em> divergences between the same two
+documents.</p>
+</div>
+<p>The full defect register (classification, citations, and the test each item became)
+is published alongside the implementation and offered to JTC 5 as standing evidence
+for the conformance workstream: the series' own texts are the richest available source
+of negative test cases. In framework terms (paper 1, §03), every item in the register
+is a seam failure — a defect at one of the twelve layer joins — and encoding each item
+as a test pins the seam it broke.</p>
+</section>
+
+<section id="results">
+<h2><span class="no">05 · Results</span>The conformance run and the demonstrations</h2>
+
+<h3>The EN 18223 example corpus, machine-run</h3>
+<p>The fixture plan of section 03 has been executed against EN 18223:2026 (final text,
+corrected and reissued 2 June 2026). Every example payload printed in the standard —
+<strong>22 fixtures</strong>: the eight compressed JSON fragments of clause 5.2, the six
+expanded JSON examples of Annex A, and the eight XML examples of Annex B — was extracted
+verbatim and run through the validators, each finding cited to the clause it violates.
+Outcome: <strong>14 pass, 8 fail, 26 error-severity findings</strong>. The distribution
+is the result: <strong>all six Annex A examples — the normative expanded-JSON
+serialization the standard teaches — fail</strong>, together with the clause 5.2.4
+header fragment and Annex B Example 1 (which carry the same four header defects); the
+seven clause 5.2 data-element fragments and Annex B Examples 2–8 pass.</p>
+<table>
+<tr><th style="width:30%">Fixture</th><th style="width:20%">Clause</th><th style="width:9%">Outcome</th><th>Findings</th></tr>
+<tr><td>cl5-5.2.4-header</td><td>5.2.4</td><td>fail</td><td>A1, A2, A6, C4</td></tr>
+<tr><td>cl5-5.2.5-dataelementcollection</td><td>5.2.5</td><td>pass</td><td>—</td></tr>
+<tr><td>cl5-5.2.6-singlevalued-standalone</td><td>5.2.6</td><td>pass</td><td>—</td></tr>
+<tr><td>cl5-5.2.6-singlevalued-in-complex</td><td>5.2.6</td><td>pass</td><td>—</td></tr>
+<tr><td>cl5-5.2.7-multivalued-native</td><td>5.2.7</td><td>pass</td><td>—</td></tr>
+<tr><td>cl5-5.2.7-multivalued-objects</td><td>5.2.7</td><td>pass</td><td>—</td></tr>
+<tr><td>cl5-5.2.8-relatedresource</td><td>5.2.8</td><td>pass</td><td>—</td></tr>
+<tr><td>cl5-5.2.9-multilanguage</td><td>5.2.9</td><td>pass</td><td>—</td></tr>
+<tr><td>annexA-example1</td><td>Annex A, Ex. 1</td><td>fail</td><td>A3 (×4), C1</td></tr>
+<tr><td>annexA-example2</td><td>Annex A, Ex. 2</td><td>fail</td><td>N1</td></tr>
+<tr><td>annexA-example3</td><td>Annex A, Ex. 3</td><td>fail</td><td>A3 (×2), N2 (×2)</td></tr>
+<tr><td>annexA-example4</td><td>Annex A, Ex. 4</td><td>fail</td><td>N5, N3, A3 (×3), N4 (×3), C1</td></tr>
+<tr><td>annexA-example5</td><td>Annex A, Ex. 5</td><td>fail</td><td>N6, A5</td></tr>
+<tr><td>annexA-example6</td><td>Annex A, Ex. 6</td><td>fail</td><td>A5</td></tr>
+<tr><td>annexB-example1</td><td>Annex B, Ex. 1</td><td>fail</td><td>A1, A2, A6, C4</td></tr>
+<tr><td>annexB-example2 … example8</td><td>Annex B, Ex. 2–8</td><td>pass ×7</td><td>—</td></tr>
+</table>
+<p>Findings cross-reference the defect register (AUDIT): the pre-registered classes
+A1–A6 (granularity and status casing, class-name drift, timestamp form, language-tag
+structure, schema-version placeholder) and B2 (the IDTA
+<span class="mono">lastUpdate</span> spelling, exercised as a probe), plus the vacancy
+references C1 and C4, which do not affect the outcome. The run also produced
+<strong>six new findings, N1–N6</strong>, each a cited fact of the EN's own text:</p>
+<table>
+<tr><th style="width:8%">ID</th><th style="width:22%">Location</th><th>Defect</th></tr>
+<tr><td>N1</td><td>Annex A, Ex. 2</td><td>Not well-formed JSON: misnested/unclosed braces; literal ellipsis array placeholders in a normative annex.</td></tr>
+<tr><td>N2</td><td>Annex A, Ex. 3</td><td><span class="mono">dictionaryReference</span> <span class="mono">https:/dictionary1/...</span> omits the <span class="mono">//</span> authority separator.</td></tr>
+<tr><td>N3</td><td>Annex A, Ex. 4</td><td>Duplicate elementId <span class="mono">efficiencyRating2</span> — violates the Table 2 uniqueness requirement.</td></tr>
+<tr><td>N4</td><td>Annex A, Ex. 4</td><td><span class="mono">xsd:float</span> values serialized as JSON strings, contradicting Table 7 and the §5.2.5 compressed numeric form.</td></tr>
+<tr><td>N5</td><td>Annex A, Ex. 4 vs Ex. 1</td><td>MultiValuedDataElement children keyed <span class="mono">value</span> vs <span class="mono">elements</span> — two serializations of one class.</td></tr>
+<tr><td>N6</td><td>Annex A, Ex. 5</td><td>Trailing comma — invalid JSON in a normative annex.</td></tr>
+</table>
+<p>Mapping the EU compressed and expanded forms onto the neutral core required
+<strong>nine documented profile adaptations, PA1–PA9</strong>: JSON line-comment
+stripping (the clause 5.2 examples print <span class="mono">//</span> comments inside
+payloads); the <span class="mono">lastUpdate</span> ↔
+<span class="mono">lastUpdated</span> key mapping; granularity and status value-case
+normalization; compressed → expanded promotion (the EN specifies the two forms by
+example and defines no transformation); positional elementId synthesis for anonymous
+array items; MultiValuedDataElement child-key tolerance; XML projection with inverse
+typing of scalar text; fragment tolerance for the §5.2 extracts; and URI-formatted
+product identifiers mapped onto the core's identifier model. Every adaptation is an
+engineering accommodation of an underspecified or internally inconsistent text,
+recorded rather than improvised — the count is itself a measure of the distance between
+the EN's two serializations. The full report, with every finding's verbatim citation,
+is published as the run's evidence annex together with the fixtures and the runner, so
+the table above can be reproduced from the purchased text (source licence constraint:
+the fixtures are not redistributed).</p>
+
+<h3>The demonstrations: byte-exact traces</h3>
+<p>The second body of implementation evidence is the <span class="mono">unidpp-demo</span>
+CLI, which replays three narrated scenarios end-to-end: the battery loop (combine,
+split, blind installation, theft taint propagating through the provenance DAG,
+end-of-waste, Tier-A packing, graded verdicts), the car (passport federation,
+predicate-based recall, as-of readings then and now), and the laptop (one neutral core
+under two jurisdiction lenses). Every timestamp is fixed and every salt is derived
+deterministically from the run seed; the workspace test suite executes each scenario
+twice and asserts <strong>byte-identical output (118/118 workspace tests green)</strong>
+— a printed trace is also a passing conformance run. The narrated walkthroughs are
+published with run instructions.</p>
+<p>The Tier-A byte numbers are the headline. The battery pack's offline payload
+projects to <strong>405 B against a QR version 15 EC-M capacity of 412 B — margin
++7 B</strong>, with both signature slots framed (ECDSA P-256 and SM2, so an EU verifier
+and a CN verifier each check under their own crypto policy). Substituting ML-DSA-65 for
+the two classical suites projects to <strong>3570 B against the 2331 B ceiling</strong>
+at version 40 — rejected with an over-budget error, never silently truncated: the
+offline minimum is fixed membership, not an elastic field. And the laptop scenario
+produces the same-passport, two-lens result the framework predicts —
+<strong>PASS under the EU lens (coverage 3/3), DEGRADED under the JP lens (coverage
+2/3)</strong>, naming the missing data point — inter-profile disagreement as an
+explicit, auditable outcome rather than a silent merge.</p>
+</section>
+
+<section id="benchmarks">
+<h2><span class="no">06 · Benchmarks planned</span>freeDPP and OpenDPP, factually</h2>
+<p>Two open implementations already exist, and the committee should read them as data,
+not as competition. <strong>freeDPP</strong> (German camp; author Otto Handle,
+CEN-CLC/JTC 24/WG 4 convenor) is a minimal ASP.NET server publishing DPPs as JSON per
+the standards and an HTML view, explicitly "not yet for production", with the eight ENs
+as its entire requirement set. <strong>OpenDPP</strong> (international camp, closed
+core) is an AAS-conformant B2B platform whose most neutral feature is UNTP coverage,
+with an interop repository carrying conformance badges (IDTA AAS v3.0/3.1, UNTP DPP
+v0.7.0, GS1 Digital Link, W3C VC), a machine-readable knowledge projection of its
+integration API, and generated SDKs version-locked to its OpenAPI contract.</p>
+<p>The capability matrix below is the factual basis for the planned benchmark suite.
+It is compiled from public repositories and documentation of both projects (assessed
+2026-09) and from UniDPP's own roadmap; it contains no capability UniDPP has not either
+demonstrated or specified. The benchmark suite itself is [planned]: identical workloads
+(issuance, update event append, full verification, offline Tier-A verification,
+registry-dependent validation) executed against all three implementations where the
+capability exists, with published methodology and raw results.</p>
+<table>
+<tr><th style="width:34%">Capability</th><th style="width:19%">freeDPP</th><th style="width:21%">OpenDPP</th><th>UniDPP</th></tr>
+<tr><td>EN 182xx (EU profile)</td><td>Yes</td><td>Yes</td><td>Yes, as one profile</td></tr>
+<tr><td>Multi-jurisdiction profiles</td><td>No</td><td>No</td><td>Core mechanism [built]</td></tr>
+<tr><td>Neutral registry (FERIN/19135)</td><td>No</td><td>No</td><td>Designed; client [built]</td></tr>
+<tr><td>Trust: multi-suite + transparency logs</td><td>No (TLS only)</td><td>W3C VC only</td><td>SIGNATIF integration [built]; Confium [planned]</td></tr>
+<tr><td>Event sourcing + transformation algebra</td><td>No</td><td>No</td><td>Core events [built]</td></tr>
+<tr><td>Offline Tier A</td><td>No</td><td>No</td><td>Packer [built]</td></tr>
+<tr><td>AI-agent knowledge projection</td><td>No</td><td>Yes (from private backend)</td><td>From the open specification [planned]</td></tr>
+<tr><td>Terminology dataset (multilingual)</td><td>No</td><td>No</td><td>Glossarist dataset [built]</td></tr>
+<tr><td>Conformance suites published</td><td>Partial (none published)</td><td>CONFORMANCE.md</td><td>Full, open [built] — §05 results</td></tr>
+<tr><td>Licence</td><td>GPL-3 server</td><td>Apache-2 boundary, closed core</td><td>Fully open (Apache-2/MIT per repo)</td></tr>
+</table>
+<p>Reading of the matrix, stated without evaluative language: freeDPP demonstrates that
+the eight ENs alone yield a single-jurisdiction system by construction — its README
+treats them as the entire requirement set. OpenDPP demonstrates that AI-agent
+projections and conformance badges can be built — from a private backend, with a closed
+core. Neither addresses the profile mechanism, the registry vacancy, the event model or
+offline verification, which is where UniDPP concentrates. freeDPP's sample payloads are
+imported into UniDPP's EU-profile fixture set, crediting the source.</p>
+</section>
+
+<section id="refs" class="refs">
+<h2><span class="no">07 · References</span></h2>
+<ol>
+<li>EN 18216–18246 series; EN 18223:2026 (final text, corrected and reissued 2 June 2026); IDTA 02099-1 (submodel-to-EN mapping template).</li>
+<li>UniDPP EU-profile conformance report (evidence annex: 22 fixtures, per-fixture findings with verbatim citations, N1–N6 register, PA1–PA9 adaptations) and the unidpp-demo narrated traces — both published with the implementation.</li>
+<li>freeDPP repositories (freeDPP, freeDPPserver, freeDPPdatabase, freeDPPgui), public, assessed 2026-09.</li>
+<li>OpenDPP repositories (opendpp-interop, opendpp-knowledge, opendpp-sdk), public, assessed 2026-09.</li>
+<li>SIGNATIF (signatif.org); Confium; Glossarist; UNTP (UNECE).</li>
+<li>Companion papers 1, 2, 3 and 5 of this series.</li>
+</ol>
+</section>
+
+</main>
+<footer>
+<div class="wrap" style="padding:0 2rem;">
+<p style="margin-bottom:0.5rem;">UniDPP project, convened under CalConnect — multi-body stewardship; Apache-2.0/MIT per repository.</p>
+<p style="margin-bottom:0;">Paper 4 of 6 · unidpp-reference-implementation.html · 2026-09-07</p>
+</div>
+</footer>
+</body>
+</html>
