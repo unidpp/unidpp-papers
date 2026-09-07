@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Digital Product Passport that works at every border — in two pages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+--paper: #faf7f0; --paper-soft: #ffffff; --paper-raised: #f3ede1;
+--ink: #101a2b; --ink-soft: #3a4a63; --ink-muted: #6b7a92;
+--rule: #dcd2bd; --rule-soft: #ebe4d4;
+--accent: #0f4c81; --accent-soft: rgba(15, 76, 129, 0.08);
+--amber: #b45309; --navy: #0a1628; --sky: #8fb8e8; --grid: rgba(10, 22, 40, 0.045);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+background: var(--paper);
+background-image:
+linear-gradient(var(--grid) 1px, transparent 1px),
+linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+background-size: 32px 32px;
+color: var(--ink); line-height: 1.65; -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 2rem; }
+header.hero {
+background: linear-gradient(160deg, #060e1c 0%, #0a1628 55%, #14233d 100%);
+color: #f5efe4; padding: 4.5rem 0 3.5rem; border-bottom: 3px solid var(--accent);
+}
+.hero .eyebrow {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; letter-spacing: 0.18em;
+text-transform: uppercase; color: var(--sky); margin-bottom: 1.25rem;
+}
+.hero h1 {
+font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 500; line-height: 1.12;
+letter-spacing: -0.015em; margin-bottom: 1.25rem;
+}
+.hero .lede { font-size: 1.1rem; color: #c2cad8; max-width: 44rem; font-weight: 300; }
+.hero .lede strong { color: #f5efe4; font-weight: 500; }
+.hero .meta {
+margin-top: 2rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem;
+color: #8d9bb4; letter-spacing: 0.04em;
+}
+main { padding: 3.5rem 0 4rem; }
+section { margin-bottom: 4rem; }
+h2 {
+font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+letter-spacing: -0.01em; margin-bottom: 1.4rem; color: var(--ink); padding-top: 1rem;
+}
+h2 .no {
+font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--accent);
+letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 0.5rem;
+font-weight: 500;
+}
+p { margin-bottom: 1.1rem; color: var(--ink-soft); }
+p strong, li strong { color: var(--ink); font-weight: 600; }
+ul, ol { margin: 0 0 1.2rem 1.4rem; color: var(--ink-soft); }
+li { margin-bottom: 0.55rem; }
+.callout {
+background: var(--paper-soft); border: 1px solid var(--rule);
+border-left: 3px solid var(--accent); border-radius: 6px;
+padding: 1.25rem 1.5rem; margin: 1.6rem 0;
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout.thesis {
+border-left-color: var(--navy); background: #ffffff;
+padding: 1.4rem 1.6rem;
+}
+.callout.thesis p {
+font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+font-size: 1.08rem; line-height: 1.55; color: var(--ink);
+}
+.callout.thesis .kicker {
+font-family: 'IBM Plex Mono', monospace; font-style: normal; font-size: 0.72rem;
+letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent);
+margin-bottom: 0.75rem;
+}
+table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+th {
+text-align: left; font-weight: 600; color: var(--ink);
+border-bottom: 2px solid var(--rule); padding: 0.5rem 0.75rem 0.5rem 0;
+}
+td { border-bottom: 1px solid var(--rule-soft); padding: 0.6rem 0.75rem 0.6rem 0; color: var(--ink-soft); vertical-align: top; }
+td:first-child { font-weight: 600; color: var(--ink); }
+.mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; }
+.qr-block {
+display: flex; gap: 1.4rem; align-items: center;
+background: var(--paper-soft); border: 1px solid var(--rule); border-radius: 6px;
+padding: 1.1rem 1.4rem; margin: 1.4rem 0 0;
+}
+.qr-block svg { flex: 0 0 auto; display: block; }
+.qr-block .qr-url {
+font-family: 'IBM Plex Mono', monospace; font-size: 1rem; font-weight: 600;
+color: var(--ink); margin-bottom: 0.4rem;
+}
+.qr-block p { font-size: 0.86rem; line-height: 1.5; margin-bottom: 0.5rem; }
+.qr-block p:last-child { margin-bottom: 0; }
+footer { border-top: 1px solid var(--rule); padding: 2.5rem 0 3rem; color: var(--ink-muted); font-size: 0.85rem; }
+@media print {
+@page { size: A4; margin: 20mm 24mm 22mm 24mm; }
+body { background: #fff; background-image: none; }
+h2, h3 { page-break-after: avoid; }
+figure, .callout, .qr-block { page-break-inside: avoid; }
+tr { page-break-inside: avoid; }
+/* Two-page density: the body budget is exactly one front page and one back
+   page (cover excluded); these overrides are more specific than the
+   builder-injected print CSS so they win the cascade. */
+main.wrap h2 { font-size: 13pt; margin-bottom: 0.6rem; padding-top: 0; }
+main.wrap p, main.wrap li { font-size: 8.9pt; line-height: 1.47; margin-bottom: 0.55rem; }
+main.wrap li { margin-bottom: 0.35rem; }
+main.wrap ul, main.wrap ol { margin-bottom: 0.6rem; margin-left: 1.2rem; }
+main.wrap table { font-size: 8.2pt; margin: 0.7rem 0 0.4rem; }
+main.wrap th, main.wrap td { padding-top: 0.24rem; padding-bottom: 0.24rem; }
+main.wrap .callout.thesis { padding: 0.75rem 1rem; margin: 0.8rem 0; }
+main.wrap .callout.thesis p { font-size: 10.2pt; line-height: 1.45; }
+main.wrap .callout.thesis .kicker { font-size: 0.66rem; margin-bottom: 0.4rem; }
+main.wrap section { margin-bottom: 0; }
+main.wrap .qr-block { padding: 0.6rem 0.9rem; margin-top: 0.8rem; gap: 1rem; }
+main.wrap .qr-block svg { width: 21mm; height: 21mm; }
+main.wrap .qr-block p { font-size: 7.9pt; line-height: 1.4; }
+main.wrap .qr-block .qr-url { font-size: 9pt; }
+body footer { padding: 0.7rem 0 0; }
+body footer p { font-size: 7.6pt; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="wrap">
+<div class="eyebrow">ISO/IEC JTC 5 · Digital Product Passport · Delegate explainer · Paper 7</div>
+<h1>The Digital Product Passport that works at every border — in two pages</h1>
+<p class="lede">A two-page orientation for delegates. One product: <strong>one identity and one
+immutable event log</strong>. Every jurisdiction reads it through its own registered, signed
+lens and verifies under its own trust anchors — offline if necessary — so no delegation is
+asked to adopt another's rules.</p>
+<div class="meta">
+CalConnect · ISO/TC 154 — with OIML and ELF — in the UniDPP framework<br>
+2026-09-07 · Companion to papers 1–6 of this series
+</div>
+</div>
+</header>
+<main class="wrap">
+
+<section id="front">
+<h2><span class="no">01 · The claim</span>The one sentence</h2>
+<p>The proposal can be stated in travel-document terms: <strong>a passport for
+products</strong> — issued once where legal duty attaches, stamped by many jurisdictions,
+readable at any border, verifiable when the network is not. Jurisdictions are today each
+inventing their own product passport; what is proposed is the one that works at
+<em>every</em> border — the settlement ICAO achieved for human travel documents
+(Doc 9303), restated for goods.</p>
+<div class="callout thesis">
+<p class="kicker">The proposal, in one sentence</p>
+<p>A product gets one identity and one immutable event log; every jurisdiction looks at it
+through its own registered, signed lens and verifies the result under its own trust anchors
+— so a Japanese inspector, a Chinese customs officer and an EU market-surveillance agent
+each see their own legally correct view of the same object, offline if necessary, and none
+of them had to adopt anyone else's rules.</p>
+</div>
+<h2><span class="no">02 · The precedent</span>The ePassport architecture</h2>
+<p>No state adopts another state's national identity document, yet all states verify each
+other's travel documents daily. ICAO Doc 9303 achieves this with a short list of
+load-bearing elements: one document per person; inspection by each state under its own
+rules; a master list of trust anchors (the CSCA/PKD system) that makes foreign anchors
+discoverable without making them mandatory; and a machine-readable zone that supports
+offline checks. The proposed framework transfers this architecture to products, element
+for element.</p>
+<p>Two consequences follow.</p>
+<ul>
+<li><strong>A regulation becomes a profile.</strong> A profile is a versioned, registered,
+signed object that binds data points, transformations, cryptographic suites, trust anchors,
+access rules and presentation — regulation as data, not regulation as envelope.</li>
+<li><strong>The symmetry is already conceded inside the EU.</strong> EN 18223 requires a
+single passport to contain the data of all applicable EU regulations; the proposal
+generalizes that arrangement symmetrically to the international case, so that no region's
+envelope is the universal format.</li>
+</ul>
+<p>Because cryptographic suites are bound to profiles rather than to the platform, the same
+payload can carry parallel signatures — SM2/SM3/SM4 where Chinese policy requires them, FIPS
+suites for United States federal use, eIDAS-acceptable suites in the EU, and ML-DSA for the
+post-quantum migration — and each verifier checks only what its own acceptance policy
+requires.</p>
+<table>
+<tr><th style="width:34%">Travel document</th><th>Mechanism in the framework</th></tr>
+<tr><td>The passport itself</td><td>The passport object, issued where legal duty attaches.</td></tr>
+<tr><td>Machine-readable zone (MRZ)</td><td>Tier-A carrier minimum: offline-verifiable.</td></tr>
+<tr><td>Visas on a national document</td><td>Lens-scoped attestations by other authorities.</td></tr>
+<tr><td>Entry and exit stamps</td><td>Verifier custody events.</td></tr>
+<tr><td>International Driving Permit</td><td>National document with convention renditions = profiles.</td></tr>
+<tr><td>CSCA master list (ICAO PKD)</td><td>M-of-K trust master list: foreign anchors discoverable, never mandatory.</td></tr>
+<tr><td>The border queue with no network</td><td>Offline Tier-A verification with cached anchors and as-of verdicts.</td></tr>
+</table>
+</section>
+
+<section id="back">
+<h2><span class="no">03 · The worked scene</span>The border moment</h2>
+<p>Consider a concrete object from the worked example that threads the reference
+implementation: the Momiji Mobility E8, an electric bicycle assembled in Kyoto — a drive
+unit from Rhine Drives (Germany), a battery pack from Weilian (Shenzhen) built of cells
+from the Haichuan lot — placed on the EU market by a Düsseldorf importer. It arrives at a
+customs and verification terminal during an ordinary offline window: the Shenzhen host is
+unreachable, and the EU registry is mid-outage. The officer scans the frame's QR carrier or
+taps NFC.</p>
+<p>What the carrier resolves to is the Tier-A minimum — the machine-readable-zone analogue:
+identity, status, critical flags and validity, sealed by multi-suite compressed signatures:
+the Japanese suite, an EU eIDAS-acceptable ECDSA signature and a post-quantum ML-DSA
+co-signature. The resolver's cached linkset points at the national mirror, and an inclusion
+proof from the mirror's copy of the transparency log substitutes for the unreachable
+origin. The terminal returns a verdict of PASS, stamped as of the moment of verification,
+with a coverage report stating exactly what was not reachable and naming the reading it
+answers — cryptographic, evidentiary or current-state.</p>
+<p>An envelope implementation offers two outcomes at this border: an error page, or a green
+page that silently trusted whatever it could reach. Here degradation is explicit. The
+coverage report is the honesty mechanism, and the officer's decision remains auditable as
+of the moment it was made.</p>
+<p>The same system holds where no regulation reaches. A 1962 Super Cub with no living
+manufacturer and no connectivity carries identity and provenance voluntarily, commissioned
+by an auction house as qualified attestor — for such objects, provenance <em>is</em> the
+product.</p>
+<h2><span class="no">04 · The summary</span>Five points for the plenary</h2>
+<ol>
+<li><strong>The border test.</strong> Any inspector, in any jurisdiction, offline, obtains a
+verdict with a coverage report. This is the property that separates a passport system from
+a lookup service, and it is demonstrable.</li>
+<li><strong>Your rules are first-class.</strong> A profile is a signed, versioned,
+registered object: regulation as data. Jurisdictional authority is preserved by
+construction, not by exception.</li>
+<li><strong>Nothing is invented.</strong> Every component is an existing standard under
+multi-body stewardship — ISO/IEC 15459 identification, ISO 8601 time, ISO 19135
+registration, ISO 80000 quantities, ISO/IEC 18004 carriers, the SIGNATIF trust framework.
+The work is assembly; the EN series' own technology-neutrality language is the
+citation.</li>
+<li><strong>The load-bearing gaps are named.</strong> §4.3 of EN 18223 leaves the registry
+vacant; the EN series defines no event model, no state machine and no trust mechanics. The
+proposed new work items fill exactly those gaps, on the ENs' own terms.</li>
+<li><strong>It runs today.</strong> The reference implementation, the conformance evidence
+and the live services are public and reproducible at unidpp.org. Delegations are invited to
+register their own profile.</li>
+</ol>
+<div class="qr-block">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" width="24mm" height="24mm" class="segno" shape-rendering="crispEdges" role="img" aria-label="QR code: unidpp.org"><path fill="#fff" d="M0 0h33v33h-33z"/><path class="qrline" stroke="#0a1628" d="M4 4.5h7m1 0h3m3 0h2m2 0h7m-25 1h1m5 0h1m1 0h1m1 0h2m2 0h2m2 0h1m5 0h1m-25 1h1m1 0h3m1 0h1m1 0h1m3 0h1m2 0h2m1 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h3m2 0h1m1 0h2m1 0h1m1 0h3m1 0h1m-25 1h1m1 0h3m1 0h1m1 0h1m2 0h1m2 0h2m2 0h1m1 0h3m1 0h1m-25 1h1m5 0h1m5 0h2m1 0h2m1 0h1m5 0h1m-25 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-17 1h2m1 0h3m2 0h1m-16 1h2m1 0h1m1 0h2m1 0h3m2 0h3m1 0h1m1 0h5m-25 1h1m1 0h2m5 0h1m2 0h1m3 0h3m5 0h1m-25 1h1m2 0h2m1 0h1m2 0h1m1 0h1m1 0h1m2 0h2m1 0h2m1 0h3m-25 1h1m1 0h1m1 0h1m2 0h4m1 0h1m3 0h3m4 0h1m-20 1h1m1 0h1m2 0h1m5 0h5m1 0h1m1 0h2m-23 1h1m4 0h2m1 0h1m1 0h1m4 0h2m2 0h1m2 0h1m-25 1h1m1 0h5m1 0h1m2 0h2m1 0h1m1 0h1m2 0h1m2 0h3m-24 1h2m4 0h6m2 0h1m4 0h1m2 0h1m-24 1h1m1 0h1m1 0h4m2 0h2m4 0h6m-14 1h3m2 0h2m1 0h1m3 0h2m1 0h2m-25 1h7m1 0h1m1 0h2m2 0h3m1 0h1m1 0h2m1 0h2m-25 1h1m5 0h1m2 0h3m2 0h1m1 0h1m3 0h2m1 0h2m-25 1h1m1 0h3m1 0h1m1 0h2m3 0h2m1 0h6m2 0h1m-25 1h1m1 0h3m1 0h1m3 0h2m1 0h3m3 0h4m-23 1h1m1 0h3m1 0h1m1 0h3m1 0h1m1 0h1m1 0h1m3 0h1m3 0h1m-25 1h1m5 0h1m1 0h2m1 0h4m1 0h1m3 0h2m1 0h1m-24 1h7m2 0h1m1 0h3m1 0h2m1 0h2m3 0h2"/></svg>
+<div>
+<p class="qr-url">unidpp.org</p>
+<p>Reference implementation, conformance evidence, live services, and the worked example of
+section 03.</p>
+<p>Companion papers in this series: 1 framework · 2 semantic registry · 3 lifecycle events ·
+4 reference implementation · 5 cross-recognition trust · 6 terminology dataset.</p>
+</div>
+</div>
+</section>
+</main>
+<footer>
+<div class="wrap" style="padding:0 2rem;">
+<p style="margin-bottom:0.5rem;">UniDPP project, convened under CalConnect — multi-body stewardship; Apache-2.0/MIT per repository.</p>
+<p style="margin-bottom:0;">Paper 7 · dpp-works-at-every-border.html · 2026-09-07</p>
+</div>
+</footer>
+</body>
+</html>
