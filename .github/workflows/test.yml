@@ -1,0 +1,13 @@
+name: test
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile-check the PDF build script
+        run: python3 -m py_compile build-papers-pdf.py && echo ok
