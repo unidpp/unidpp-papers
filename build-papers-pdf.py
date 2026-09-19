@@ -46,6 +46,7 @@ Exit status: 0 on success (or a passing --check), 1 on any failure.
 
 import argparse
 import glob
+import json
 import os
 import re
 import shutil
@@ -327,6 +328,66 @@ def run_check():
     return 1
 
 
+def spec_head():
+    """The unidpp-spec commit the family checkout holds (None when the
+    sibling repository is absent — the manifest records 'unknown')."""
+    spec_dir = os.path.abspath(
+        os.path.join(os.path.dirname(__file__) or ".", "..", "unidpp-spec"))
+    try:
+        import subprocess
+        return subprocess.run(
+            ["git", "-C", spec_dir, "rev-parse", "--short", "HEAD"],
+            capture_output=True, text=True, check=True).stdout.strip()
+    except Exception:
+        return "unknown"
+
+
+def record_build(out, src):
+    """Record the build's provenance: the spec commit the PDF was
+    rendered against (TODO 236 — the refresh trigger the papers
+    lacked)."""
+    manifest_path = os.path.join(os.path.dirname(__file__), "MANIFEST.json")
+    manifest = {}
+    if os.path.exists(manifest_path):
+        try:
+            with open(manifest_path, encoding="utf-8") as handle:
+                manifest = json.load(handle)
+        except Exception:
+            manifest = {}
+    manifest[os.path.basename(out)] = {
+        "source": os.path.basename(src),
+        "spec_commit": spec_head(),
+        "built_at": time.strftime("%Y-%m-%d"),
+    }
+    with open(manifest_path, "w", encoding="utf-8") as handle:
+        json.dump(manifest, handle, indent=2, sort_keys=True)
+        handle.write("\n")
+
+
+def run_freshness_check():
+    """Exit non-zero when any rendered PDF predates the current spec
+    head — the material-change refresh trigger."""
+    manifest_path = os.path.join(os.path.dirname(__file__), "MANIFEST.json")
+    if not os.path.exists(manifest_path):
+        print("freshness: no MANIFEST.json — no paper has recorded provenance yet")
+        return 0
+    with open(manifest_path, encoding="utf-8") as handle:
+        manifest = json.load(handle)
+    head = spec_head()
+    stale = [name for name, rec in sorted(manifest.items())
+             if rec.get("spec_commit") not in (head, "unknown")]
+    for name in stale:
+        print("freshness: STALE %s (built against %s, spec head is %s)"
+              % (name, manifest[name]["spec_commit"], head))
+    if stale:
+        print("freshness: %d paper(s) predate the current specification — "
+              "re-render them in the change that moved the spec" % len(stale))
+        return 1
+    print("freshness: ok — %d paper(s) recorded against spec %s"
+          % (len(manifest), head))
+    return 0
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="UniDPP papers PDF builder (HTML -> PDF, typographic cover)")
@@ -347,12 +408,17 @@ def main():
                         help="running footer for body pages (default: UniDPP · <basename>)")
     parser.add_argument("--check", action="store_true",
                         help="verify the toolchain and exit (no conversion)")
+    parser.add_argument("--check-fresh", action="store_true",
+                        help="verify every rendered PDF was built against the "
+                             "current unidpp-spec head; exit non-zero on stale papers")
     args = parser.parse_args()
 
     if args.check:
         sys.exit(run_check())
+    if args.check_fresh:
+        sys.exit(run_freshness_check())
     if not args.src or not args.out:
-        parser.error("SRC and OUT are required unless --check is given")
+        parser.error("SRC and OUT are required unless --check or --check-fresh is given")
 
     with open(args.src, encoding="utf-8") as handle:
         src = handle.read()
@@ -386,6 +452,7 @@ def main():
         os.remove(part)
     for leftover in glob.glob(out_base + ".*.html"):
         os.remove(leftover)
+    record_build(out, args.src)
     print("PDF: %s (renderer=%s, merger=%s)" % (out, renderer, merger))
 
 
