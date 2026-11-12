@@ -2,36 +2,36 @@
   "an-international-framework-for-the-dpp.pdf": {
     "built_at": "2026-11-12",
     "source": "an-international-framework-for-the-dpp.html",
-    "spec_commit": "87ad9b5"
+    "spec_commit": "e08891d"
   },
   "cross-recognition-trust-for-dpp.pdf": {
     "built_at": "2026-11-12",
     "source": "cross-recognition-trust-for-dpp.html",
-    "spec_commit": "87ad9b5"
+    "spec_commit": "e08891d"
   },
   "dpp-lifecycle-events-validity.pdf": {
     "built_at": "2026-11-12",
     "source": "dpp-lifecycle-events-validity.html",
-    "spec_commit": "87ad9b5"
+    "spec_commit": "e08891d"
   },
   "dpp-terminology-dataset.pdf": {
     "built_at": "2026-11-12",
     "source": "dpp-terminology-dataset.html",
-    "spec_commit": "87ad9b5"
+    "spec_commit": "e08891d"
   },
   "dpp-works-at-every-border.pdf": {
     "built_at": "2026-11-12",
     "source": "dpp-works-at-every-border.html",
-    "spec_commit": "87ad9b5"
+    "spec_commit": "e08891d"
   },
   "semantic-registry-requirements.pdf": {
     "built_at": "2026-11-12",
     "source": "semantic-registry-requirements.html",
-    "spec_commit": "87ad9b5"
+    "spec_commit": "e08891d"
   },
   "unidpp-reference-implementation.pdf": {
     "built_at": "2026-11-12",
     "source": "unidpp-reference-implementation.html",
-    "spec_commit": "87ad9b5"
+    "spec_commit": "e08891d"
   }
 }
